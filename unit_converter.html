@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>単位変換</title>
+<style>
+  :root{
+    --bg:#F5F3ED;
+    --surface:#FFFFFF;
+    --surface-2:#EDEAE1;
+    --text:#1E1D1B;
+    --muted:#6B6560;
+    --border:#E2DED3;
+    --accent:#1F6F64;
+    --accent-ink:#0F3D37;
+    --brass:#B07C3A;
+    --danger:#B3452F;
+    --radius-card:20px;
+    --radius-pill:999px;
+    --shadow:0 1px 2px rgba(30,29,27,0.06), 0 8px 24px rgba(30,29,27,0.06);
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#12151A;
+      --surface:#1C2027;
+      --surface-2:#242933;
+      --text:#E9E6DE;
+      --muted:#9A968D;
+      --border:#2A2F38;
+      --accent:#4FBFA8;
+      --accent-ink:#DFF7F1;
+      --brass:#D9A056;
+      --danger:#E08267;
+      --shadow:0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.35);
+    }
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom));
+    overscroll-behavior-y: none;
+  }
+  .num{
+    font-family: ui-monospace, "SF Mono", "Menlo", monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  header{
+    position:sticky; top:0; z-index:20;
+    background:var(--bg);
+    padding: calc(14px + env(safe-area-inset-top)) 16px 8px;
+  }
+  .title{
+    font-size:22px; font-weight:700; letter-spacing:-0.01em; margin:0 0 12px;
+  }
+  .tabs{
+    display:flex; gap:8px; overflow-x:auto; padding-bottom:6px;
+    scrollbar-width:none; -ms-overflow-style:none;
+  }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:0 0 auto;
+    display:flex; align-items:center; gap:6px;
+    padding:9px 14px 9px 10px;
+    border-radius:var(--radius-pill);
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--muted);
+    font-size:13.5px;
+    font-weight:600;
+    white-space:nowrap;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .tab svg{ width:18px; height:18px; display:block; flex:0 0 auto; }
+  .tab .dot{
+    width:7px; height:7px; border-radius:50%; flex:0 0 auto;
+  }
+  .tab.active{
+    color:var(--text);
+    border-color: transparent;
+    background: var(--surface-2);
+  }
+
+  main{ padding:4px 16px 0; max-width:560px; margin:0 auto; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow);
+    padding:18px 16px;
+  }
+
+  .row{
+    display:flex; align-items:stretch; gap:10px;
+  }
+  .field{
+    flex:1;
+    min-width:0;
+  }
+  .field label{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .unit-select{
+    width:100%;
+    -webkit-appearance:none; appearance:none;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 30px 10px 12px;
+    font-size:15px;
+    font-weight:600;
+    color:var(--text);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6560' stroke-width='2' stroke-linecap='round'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat;
+    background-position: right 8px center;
+    background-size:18px;
+  }
+  .value-input{
+    width:100%;
+    margin-top:8px;
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 14px;
+    font-size:22px;
+    font-weight:600;
+    color:var(--text);
+    outline:none;
+  }
+  .value-input:focus{
+    border-color:var(--accent);
+  }
+  .value-input.readonly{
+    color:var(--accent);
+  }
+
+  .swap-wrap{
+    display:flex; align-items:center; justify-content:center;
+    padding-top: 26px;
+  }
+  .swap-btn{
+    width:40px; height:40px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--accent);
+    transition: transform .15s ease;
+  }
+  .swap-btn:active{ transform: rotate(180deg) scale(0.94); }
+  .swap-btn svg{ width:20px; height:20px; }
+
+  .precision-note{
+    margin-top:14px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.5;
+  }
+
+  .section-title{
+    font-size:13px;
+    font-weight:700;
+    color:var(--muted);
+    margin: 22px 2px 8px;
+    letter-spacing:0.01em;
+  }
+
+  .history{
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .history-item{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:11px 14px;
+    font-size:14px;
+  }
+  .history-item .from, .history-item .to{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .history-item .arrow{
+    color:var(--muted);
+    flex:0 0 auto;
+    font-size:13px;
+  }
+  .history-empty{
+    font-size:13px;
+    color:var(--muted);
+    padding: 6px 2px 2px;
+  }
+
+  .footnote{
+    margin: 18px 2px 4px;
+    font-size:11.5px;
+    color:var(--muted);
+    line-height:1.6;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 class="title">単位変換</h1>
+  <div class="tabs" id="tabs"></div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="row">
+      <div class="field">
+        <label for="fromUnit">変換元</label>
+        <select id="fromUnit" class="unit-select"></select>
+        <input id="fromValue" class="value-input" type="text" inputmode="decimal" placeholder="0" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="swap-wrap">
+      <button id="swapBtn" class="swap-btn" aria-label="単位を入れ替え">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 10l-4-4 4-4"/><path d="M3 6h13a4 4 0 0 1 4 4v1"/>
+          <path d="M17 14l4 4-4 4"/><path d="M21 18H8a4 4 0 0 1-4-4v-1"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="toUnit">変換先</label>
+        <select id="toUnit" class="unit-select"></select>
+        <input id="toValue" class="value-input readonly" type="text" inputmode="decimal" placeholder="0" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="precision-note" id="precisionNote"></div>
+  </div>
+
+  <div class="section-title">変換履歴</div>
+  <div class="history" id="history">
+    <div class="history-empty">まだ履歴はありません</div>
+  </div>
+
+  <div class="footnote" id="footnote"></div>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------------------------------------------------
+     1. カテゴリ・単位定義
+     追加したいカテゴリ／単位はこの配列にオブジェクトを足すだけ。
+     type: "linear"        -> factor(基準単位への倍率)のみで換算
+           "affine"        -> toBase(v), fromBase(v) を個別定義(温度など)
+           "custom"        -> toBase(v), fromBase(v) を個別定義(非線形。燃費など)
+  --------------------------------------------------------- */
+  const ICONS = {
+    ruler: '<path d="M3 15v4a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-4"/><path d="M3 15l14-11 4 4-14 11z"/><path d="M12.5 8.5l2 2"/><path d="M9.5 11.5l2 2"/><path d="M6.5 14.5l2 2"/>',
+    scale: '<path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-3 6a3.2 3.2 0 0 0 6 0z"/><path d="M19 7l-3 6a3.2 3.2 0 0 0 6 0z"/><rect x="8" y="18" width="8" height="3" rx="1"/>',
+    therm: '<path d="M12 15V5a2 2 0 1 0-4 0v10a4 4 0 1 0 4 0z"/><path d="M12 9h1.5"/>',
+    drop: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    square: '<rect x="4" y="4" width="16" height="16" rx="2"/>',
+    speed: '<circle cx="12" cy="13" r="8"/><path d="M12 13l4-4"/><path d="M6 5l1.5 1.5"/><path d="M18 5l-1.5 1.5"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    data: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
+    gauge: '<path d="M4 15a8 8 0 1 1 16 0"/><path d="M12 15l3-4"/><circle cx="12" cy="15" r="1"/>',
+    bolt: '<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>',
+    plug: '<path d="M9 3v5"/><path d="M15 3v5"/><path d="M7 8h10v3a5 5 0 0 1-5 5 5 5 0 0 1-5-5z"/><path d="M12 16v5"/>',
+    wave: '<path d="M2 12h3l2-7 4 14 3-9 2 5h6"/>',
+    angle: '<path d="M4 20h16"/><path d="M4 20L15 5"/><path d="M8 20a7 7 0 0 1 3.2-11.7" />',
+    fuel: '<path d="M4 21V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v15"/><path d="M4 11h8"/><path d="M14 8l3 2v7a1.5 1.5 0 0 0 3 0V9l-3-3"/>',
+    cube: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5L12 12l8-4.5"/><path d="M12 12v9"/>',
+    wrench: '<path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-3.3 3.3-2-2z"/>',
+    force: '<path d="M5 12h11"/><path d="M12 7l4 5-4 5"/>',
+    cup: '<path d="M5 4h11v9a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z"/><path d="M16 8h2a2 2 0 0 1 0 4h-2"/><path d="M9 4V2"/><path d="M12 4V2"/>'
+  };
+
+  function icon(name){
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+ICONS[name]+'</svg>';
+  }
+
+  // 技術的な配色コード(彩度・明度を揃えた落ち着いた色相のセット)
+  const HUES = ["#3F7D6E","#B0793D","#5E76B0","#A5544D","#4C8DA0","#8A7440","#6E7F45","#94608C","#3F7D6E"];
+
+  const CATEGORIES = [
+    {
+      id:"length", name:"長さ", icon:"ruler", type:"linear",
+      units:[
+        {id:"mm", name:"ミリメートル (mm)", factor:0.001},
+        {id:"cm", name:"センチメートル (cm)", factor:0.01},
+        {id:"m", name:"メートル (m)", factor:1},
+        {id:"km", name:"キロメートル (km)", factor:1000},
+        {id:"in", name:"インチ (in)", factor:0.0254},
+        {id:"ft", name:"フィート (ft)", factor:0.3048},
+        {id:"yd", name:"ヤード (yd)", factor:0.9144},
+        {id:"mile", name:"マイル (mile)", factor:1609.344}
+      ]
+    },
+    {
+      id:"weight", name:"重さ", icon:"scale", type:"linear",
+      units:[
+        {id:"mg", name:"ミリグラム (mg)", factor:0.000001},
+        {id:"g", name:"グラム (g)", factor:0.001},
+        {id:"kg", name:"キログラム (kg)", factor:1},
+        {id:"t", name:"トン (t)", factor:1000},
+        {id:"oz", name:"オンス (oz)", factor:0.0283495},
+        {id:"lb", name:"ポンド (lb)", factor:0.45359237}
+      ]
+    },
+    {
+      id:"temp", name:"温度", icon:"therm", type:"affine",
+      units:[
+        {id:"c", name:"摂氏 (°C)", toBase:v=>v, fromBase:v=>v},
+        {id:"f", name:"華氏 (°F)", toBase:v=>(v-32)*5/9, fromBase:v=>v*9/5+32},
+        {id:"k", name:"ケルビン (K)", toBase:v=>v-273.15, fromBase:v=>v+273.15}
+      ]
+    },
+    {
+      id:"volume", name:"体積", icon:"drop", type:"linear",
+      units:[
+        {id:"ml", name:"ミリリットル (mL)", factor:0.001},
+        {id:"l", name:"リットル (L)", factor:1},
+        {id:"m3", name:"立方メートル (m³)", factor:1000},
+        {id:"floz", name:"液量オンス (fl oz)", factor:0.0295735},
+        {id:"cup_us", name:"カップ(US, 236mL)", factor:0.236588},
+        {id:"gal", name:"ガロン(US gal)", factor:3.785412},
+        {id:"pt", name:"パイント (pt)", factor:0.473176},
+        {id:"qt", name:"クォート (qt)", factor:0.946353}
+      ]
+    },
+    {
+      id:"area", name:"面積", icon:"square", type:"linear",
+      units:[
+        {id:"mm2", name:"平方ミリメートル (mm²)", factor:0.000001},
+        {id:"cm2", name:"平方センチメートル (cm²)", factor:0.0001},
+        {id:"m2", name:"平方メートル (m²)", factor:1},
+        {id:"are", name:"アール (a)", factor:100},
+        {id:"ha", name:"ヘクタール (ha)", factor:10000},
+        {id:"km2", name:"平方キロメートル (km²)", factor:1000000},
+        {id:"tsubo", name:"坪", factor:3.305785},
+        {id:"ft2", name:"平方フィート (ft²)", factor:0.092903},
+        {id:"acre", name:"エーカー (acre)", factor:4046.8564},
+        {id:"mile2", name:"平方マイル (mile²)", factor:2589988.11}
+      ]
+    },
+    {
+      id:"speed", name:"速さ", icon:"speed", type:"linear",
+      units:[
+        {id:"mps", name:"メートル毎秒 (m/s)", factor:1},
+        {id:"kmh", name:"キロメートル毎時 (km/h)", factor:0.277778},
+        {id:"mph", name:"マイル毎時 (mph)", factor:0.44704},
+        {id:"knot", name:"ノット (knot)", factor:0.514444},
+        {id:"fts", name:"フィート毎秒 (ft/s)", factor:0.3048}
+      ]
+    },
+    {
+      id:"time", name:"時間", icon:"clock", type:"linear",
+      units:[
+        {id:"ms", name:"ミリ秒 (ms)", factor:0.001},
+        {id:"s", name:"秒 (s)", factor:1},
+        {id:"min", name:"分 (min)", factor:60},
+        {id:"h", name:"時間 (h)", factor:3600},
+        {id:"day", name:"日 (day)", factor:86400},
+        {id:"week", name:"週 (week)", factor:604800},
+        {id:"month", name:"月(平均, month)", factor:2629800},
+        {id:"year", name:"年 (year)", factor:31557600}
+      ]
+    },
+    {
+      id:"data", name:"データ容量", icon:"data", type:"linear",
+      units:[
+        {id:"bit", name:"ビット (bit)", factor:0.125},
+        {id:"byte", name:"バイト (byte)", factor:1},
+        {id:"kb", name:"キロバイト (KB)", factor:1024},
+        {id:"mb", name:"メガバイト (MB)", factor:Math.pow(1024,2)},
+        {id:"gb", name:"ギガバイト (GB)", factor:Math.pow(1024,3)},
+        {id:"tb", name:"テラバイト (TB)", factor:Math.pow(1024,4)}
+      ]
+    },
+    {
+      id:"pressure", name:"圧力", icon:"gauge", type:"linear",
+      units:[
+        {id:"pa", name:"パスカル (Pa)", factor:1},
+        {id:"kpa", name:"キロパスカル (kPa)", factor:1000},
+        {id:"mpa", name:"メガパスカル (MPa)", factor:1000000},
+        {id:"bar", name:"バール (bar)", factor:100000},
+        {id:"atm", name:"気圧 (atm)", factor:101325},
+        {id:"mmhg", name:"水銀柱ミリメートル (mmHg)", factor:133.322},
+        {id:"psi", name:"重量ポンド毎平方インチ (psi)", factor:6894.76}
+      ]
+    },
+    {
+      id:"energy", name:"エネルギー", icon:"bolt", type:"linear",
+      units:[
+        {id:"j", name:"ジュール (J)", factor:1},
+        {id:"kj", name:"キロジュール (kJ)", factor:1000},
+        {id:"cal", name:"カロリー (cal)", factor:4.184},
+        {id:"kcal", name:"キロカロリー (kcal)", factor:4184},
+        {id:"wh", name:"ワット時 (Wh)", factor:3600},
+        {id:"kwh", name:"キロワット時 (kWh)", factor:3600000},
+        {id:"btu", name:"英熱量 (BTU)", factor:1055.06}
+      ]
+    },
+    {
+      id:"power", name:"仕事率", icon:"plug", type:"linear",
+      units:[
+        {id:"w", name:"ワット (W)", factor:1},
+        {id:"kw", name:"キロワット (kW)", factor:1000},
+        {id:"mw", name:"メガワット (MW)", factor:1000000},
+        {id:"hp", name:"馬力 (hp)", factor:745.7},
+        {id:"kcalh", name:"キロカロリー毎時 (kcal/h)", factor:1.163}
+      ]
+    },
+    {
+      id:"freq", name:"周波数", icon:"wave", type:"linear",
+      units:[
+        {id:"hz", name:"ヘルツ (Hz)", factor:1},
+        {id:"khz", name:"キロヘルツ (kHz)", factor:1000},
+        {id:"mhz", name:"メガヘルツ (MHz)", factor:1000000},
+        {id:"ghz", name:"ギガヘルツ (GHz)", factor:1000000000},
+        {id:"rpm", name:"回転毎分 (rpm)", factor:1/60}
+      ]
+    },
+    {
+      id:"angle", name:"角度", icon:"angle", type:"linear",
+      units:[
+        {id:"deg", name:"度 (°)", factor:Math.PI/180},
+        {id:"rad", name:"ラジアン (rad)", factor:1},
+        {id:"grad", name:"グラード (grad)", factor:Math.PI/200},
+        {id:"turn", name:"回転 (turn)", factor:2*Math.PI}
+      ]
+    },
+    {
+      id:"fuel", name:"燃費", icon:"fuel", type:"custom",
+      // 基準値: km/L
+      units:[
+        {id:"kml", name:"km/L",
+          toBase:v=>v, fromBase:v=>v},
+        {id:"l100km", name:"L/100km",
+          toBase:v=> v===0?0:100/v, fromBase:v=> v===0?0:100/v},
+        {id:"mpg_us", name:"mpg(US)",
+          toBase:v=>v/2.3521458, fromBase:v=>v*2.3521458},
+        {id:"mpg_uk", name:"mpg(UK)",
+          toBase:v=>v/2.8248095, fromBase:v=>v*2.8248095}
+      ]
+    },
+    {
+      id:"density", name:"密度", icon:"cube", type:"linear",
+      units:[
+        {id:"kgm3", name:"キログラム毎立方メートル (kg/m³)", factor:1},
+        {id:"gcm3", name:"グラム毎立方センチ (g/cm³)", factor:1000},
+        {id:"gml", name:"グラム毎ミリリットル (g/mL)", factor:1000},
+        {id:"kgl", name:"キログラム毎リットル (kg/L)", factor:1000},
+        {id:"lbft3", name:"ポンド毎立方フィート (lb/ft³)", factor:16.0185},
+        {id:"lbgal", name:"ポンド毎ガロン(US) (lb/gal)", factor:119.826}
+      ]
+    },
+    {
+      id:"torque", name:"トルク", icon:"wrench", type:"linear",
+      units:[
+        {id:"nm", name:"ニュートンメートル (N·m)", factor:1},
+        {id:"knm", name:"キロニュートンメートル (kN·m)", factor:1000},
+        {id:"lbfft", name:"重量ポンドフィート (lbf·ft)", factor:1.35582},
+        {id:"lbfin", name:"重量ポンドインチ (lbf·in)", factor:0.112985},
+        {id:"kgfm", name:"重量キログラムメートル (kgf·m)", factor:9.80665}
+      ]
+    },
+    {
+      id:"force", name:"力", icon:"force", type:"linear",
+      units:[
+        {id:"n", name:"ニュートン (N)", factor:1},
+        {id:"kn", name:"キロニュートン (kN)", factor:1000},
+        {id:"kgf", name:"重量キログラム (kgf)", factor:9.80665},
+        {id:"lbf", name:"重量ポンド (lbf)", factor:4.44822},
+        {id:"dyn", name:"ダイン (dyn)", factor:0.00001}
+      ]
+    },
+    {
+      id:"cooking", name:"料理用計量", icon:"cup", type:"linear",
+      units:[
+        {id:"ml", name:"ミリリットル (mL)", factor:1},
+        {id:"tsp_jp", name:"小さじ (5mL)", factor:5},
+        {id:"tbsp_jp", name:"大さじ (15mL)", factor:15},
+        {id:"cup_jp", name:"カップ (200mL)", factor:200},
+        {id:"g_water", name:"グラム(水の目安, g)", factor:1}
+      ]
+    }
+  ];
+
+  /* ---------------------------------------------------------
+     2. 状態管理
+  --------------------------------------------------------- */
+  const state = {
+    categoryId: CATEGORIES[0].id,
+    fromUnitId: null,
+    toUnitId: null
+  };
+  const history = []; // {catName, fromText, toText}
+
+  const els = {
+    tabs: document.getElementById("tabs"),
+    fromUnit: document.getElementById("fromUnit"),
+    toUnit: document.getElementById("toUnit"),
+    fromValue: document.getElementById("fromValue"),
+    toValue: document.getElementById("toValue"),
+    swapBtn: document.getElementById("swapBtn"),
+    history: document.getElementById("history"),
+    precisionNote: document.getElementById("precisionNote"),
+    footnote: document.getElementById("footnote")
+  };
+
+  function getCategory(id){
+    return CATEGORIES.find(c=>c.id===id);
+  }
+  function getUnit(cat, unitId){
+    return cat.units.find(u=>u.id===unitId);
+  }
+
+  /* ---------------------------------------------------------
+     3. 換算ロジック(基準単位経由)
+  --------------------------------------------------------- */
+  function toBaseValue(cat, unit, value){
+    if(cat.type==="linear") return value*unit.factor;
+    return unit.toBase(value);
+  }
+  function fromBaseValue(cat, unit, baseValue){
+    if(cat.type==="linear") return baseValue/unit.factor;
+    return unit.fromBase(baseValue);
+  }
+  function convert(cat, fromUnit, toUnit, value){
+    const base = toBaseValue(cat, fromUnit, value);
+    return fromBaseValue(cat, toUnit, base);
+  }
+
+  /* ---------------------------------------------------------
+     4. 表示桁数の自動調整
+  --------------------------------------------------------- */
+  function formatNumber(n){
+    if(!isFinite(n)) return "—";
+    if(n===0) return "0";
+    const abs = Math.abs(n);
+    let decimals;
+    if(abs >= 1000) decimals = 2;
+    else if(abs >= 1) decimals = 4;
+    else if(abs >= 0.01) decimals = 6;
+    else decimals = 8;
+    let s = n.toFixed(decimals);
+    // 末尾の不要な0を削る
+    s = s.replace(/(\.\d*?)0+$/,"$1").replace(/\.$/,"");
+    // 桁区切り(整数部)
+    const parts = s.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  }
+
+  /* ---------------------------------------------------------
+     5. UI構築
+  --------------------------------------------------------- */
+  function buildTabs(){
+    els.tabs.innerHTML = CATEGORIES.map((c,i)=>{
+      const hue = HUES[i % HUES.length];
+      return `<button class="tab" data-cat="${c.id}" style="--hue:${hue}">
+        <span class="dot" style="background:${hue}"></span>
+        ${c.name}
+      </button>`;
+    }).join("");
+
+    els.tabs.querySelectorAll(".tab").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        selectCategory(btn.dataset.cat);
+      });
+    });
+    updateTabActive();
+  }
+
+  function updateTabActive(){
+    els.tabs.querySelectorAll(".tab").forEach(btn=>{
+      const active = btn.dataset.cat === state.categoryId;
+      btn.classList.toggle("active", active);
+      if(active){
+        btn.scrollIntoView({inline:"center", block:"nearest", behavior:"smooth"});
+      }
+    });
+  }
+
+  function buildUnitSelects(){
+    const cat = getCategory(state.categoryId);
+    const options = cat.units.map(u=>`<option value="${u.id}">${u.name}</option>`).join("");
+    els.fromUnit.innerHTML = options;
+    els.toUnit.innerHTML = options;
+
+    state.fromUnitId = cat.units[0].id;
+    state.toUnitId = cat.units.length>1 ? cat.units[1].id : cat.units[0].id;
+
+    els.fromUnit.value = state.fromUnitId;
+    els.toUnit.value = state.toUnitId;
+  }
+
+  function selectCategory(catId){
+    state.categoryId = catId;
+    updateTabActive();
+    buildUnitSelects();
+    els.fromValue.value = "1";
+    updateFootnote();
+    recalc("from");
+  }
+
+  function updateFootnote(){
+    const notes = {
+      cooking: "※「グラム(水の目安)」は水の密度(1mL=1g)で概算した値です。食材により重さは異なります。",
+      fuel: "※ L/100km・mpg は逆数の関係にあるため、0 付近の値では表示が不安定になる場合があります。",
+      time: "※ 月・年は平均的な長さ(1か月=30.4375日、1年=365.25日)で計算しています。"
+    };
+    els.footnote.textContent = notes[state.categoryId] || "";
+  }
+
+  function recalc(direction){
+    const cat = getCategory(state.categoryId);
+    const fromUnit = getUnit(cat, state.fromUnitId);
+    const toUnit = getUnit(cat, state.toUnitId);
+
+    if(direction==="from"){
+      const raw = els.fromValue.value.trim();
+      const value = parseFloat(raw);
+      if(raw==="" || isNaN(value)){
+        els.toValue.value = "";
+        return;
+      }
+      const result = convert(cat, fromUnit, toUnit, value);
+      els.toValue.value = formatNumber(result);
+      pushHistory(cat, fromUnit, toUnit, raw, els.toValue.value);
+    } else {
+      const raw = els.toValue.value.trim();
+      const value = parseFloat(raw);
+      if(raw==="" || isNaN(value)){
+        els.fromValue.value = "";
+        return;
+      }
+      const result = convert(cat, toUnit, fromUnit, value);
+      els.fromValue.value = formatNumber(result);
+      pushHistory(cat, fromUnit, toUnit, els.fromValue.value, raw);
+    }
+  }
+
+  let historyTimer = null;
+  function pushHistory(cat, fromUnit, toUnit, fromText, toText){
+    clearTimeout(historyTimer);
+    historyTimer = setTimeout(()=>{
+      if(fromText==="" || toText==="") return;
+      const entry = {
+        catName: cat.name,
+        fromText: `${fromText} ${shortLabel(fromUnit)}`,
+        toText: `${toText} ${shortLabel(toUnit)}`
+      };
+      // 直前と同じなら追加しない
+      const last = history[0];
+      if(last && last.fromText===entry.fromText && last.toText===entry.toText) return;
+      history.unshift(entry);
+      history.length = Math.min(history.length, 5);
+      renderHistory();
+    }, 700);
+  }
+
+  function shortLabel(unit){
+    const m = unit.name.match(/\(([^)]+)\)/);
+    return m ? m[1] : unit.name;
+  }
+
+  function renderHistory(){
+    if(history.length===0){
+      els.history.innerHTML = `<div class="history-empty">まだ履歴はありません</div>`;
+      return;
+    }
+    els.history.innerHTML = history.map(h=>`
+      <div class="history-item">
+        <span class="from num">${h.fromText}</span>
+        <span class="arrow">→</span>
+        <span class="to num">${h.toText}</span>
+      </div>
+    `).join("");
+  }
+
+  /* ---------------------------------------------------------
+     6. イベント
+  --------------------------------------------------------- */
+  els.fromUnit.addEventListener("change", ()=>{
+    state.fromUnitId = els.fromUnit.value;
+    recalc("from");
+  });
+  els.toUnit.addEventListener("change", ()=>{
+    state.toUnitId = els.toUnit.value;
+    recalc("from");
+  });
+  els.fromValue.addEventListener("input", ()=>recalc("from"));
+  els.toValue.addEventListener("input", ()=>recalc("to"));
+
+  els.swapBtn.addEventListener("click", ()=>{
+    const tmpUnit = state.fromUnitId;
+    state.fromUnitId = state.toUnitId;
+    state.toUnitId = tmpUnit;
+    els.fromUnit.value = state.fromUnitId;
+    els.toUnit.value = state.toUnitId;
+
+    const tmpVal = els.fromValue.value;
+    els.fromValue.value = els.toValue.value;
+    recalc("from");
+    if(els.toValue.value===""){
+      els.fromValue.value = tmpVal;
+    }
+  });
+
+  /* ---------------------------------------------------------
+     7. アイコン差し込み(色分けタブ生成後にSVGを注入)
+  --------------------------------------------------------- */
+  function injectTabIcons(){
+    CATEGORIES.forEach(c=>{
+      const btn = els.tabs.querySelector(`.tab[data-cat="${c.id}"]`);
+      if(btn){
+        const dot = btn.querySelector(".dot");
+        dot.insertAdjacentHTML("afterend", icon(c.icon));
+        const svg = btn.querySelector("svg");
+        svg.style.color = dot.style.background;
+      }
+    });
+  }
+
+  /* ---------------------------------------------------------
+     8. 初期化
+  --------------------------------------------------------- */
+  buildTabs();
+  injectTabIcons();
+  buildUnitSelects();
+  els.fromValue.value = "1";
+  updateFootnote();
+  recalc("from");
+
+})();
+</script>
+</body>
+</html>
