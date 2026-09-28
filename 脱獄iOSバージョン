@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iPhone 脱獄対応iOS一覧</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --text:#1c1f24; --muted:#5f6b7a; --line:#e2e6ec;
+  --ok:#0f7b45; --ok-bg:#e3f5ea; --no:#b3261e; --no-bg:#fbe7e5; --warn:#8a5a00; --warn-bg:#fdf1d6; --accent:#2454d6;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#111418; --card:#1a1f26; --text:#e8ecf1; --muted:#9aa6b5; --line:#2b323c;
+    --ok:#5fd394; --ok-bg:#12331f; --no:#ff8f86; --no-bg:#3a1a18; --warn:#f2c46b; --warn-bg:#3a2d10; --accent:#8fb0ff;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 4px}
+h2{font-size:1.15rem;margin:32px 0 10px}
+.sub{color:var(--muted);font-size:.9rem;margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+.card h3{margin:0 0 2px;font-size:1.02rem}
+.card .meta{color:var(--muted);font-size:.85rem;margin-bottom:8px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.8rem;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:1px 9px;border-radius:999px;font-size:.78rem;font-weight:600;white-space:nowrap}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.b-no{background:var(--no-bg);color:var(--no)}
+.b-warn{background:var(--warn-bg);color:var(--warn)}
+.note{background:var(--warn-bg);color:var(--text);border-left:4px solid var(--warn);padding:10px 14px;border-radius:8px;font-size:.9rem;margin:12px 0}
+ul{padding-left:1.2rem;margin:6px 0}
+li{margin:3px 0}
+code{background:var(--line);padding:1px 6px;border-radius:5px;font-size:.85em}
+a{color:var(--accent)}
+.foot{color:var(--muted);font-size:.8rem;margin-top:28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>iPhone 脱獄対応iOS一覧（8 Plus 〜 18系）</h1>
+<p class="sub">調査日：2026年9月28日 ／ 最新ツール：Dopamine 3.0.10（2026-09-23）</p>
+
+<h2>早見表</h2>
+<div class="card scroll">
+<table>
+<thead><tr><th>機種</th><th>チップ</th><th>初期iOS</th><th>脱獄できる上限</th><th>主なツール</th></tr></thead>
+<tbody>
+<tr><td>iPhone 8 / 8 Plus / X</td><td>A11</td><td>11.0</td><td><span class="badge b-ok">16.7.16</span>（端末の最終iOS）</td><td>Dopamine / palera1n</td></tr>
+<tr><td>iPhone XS / XS Max / XR</td><td>A12</td><td>12.0</td><td><span class="badge b-ok">18.7.1</span></td><td>Dopamine</td></tr>
+<tr><td>iPhone 11 / 11 Pro / 11 Pro Max / SE(第2世代)</td><td>A13</td><td>13.0</td><td><span class="badge b-ok">26.0.1</span></td><td>Dopamine</td></tr>
+<tr><td>iPhone 12 mini / 12 / 12 Pro / 12 Pro Max</td><td>A14</td><td>14.1</td><td><span class="badge b-ok">17.3.1</span></td><td>Dopamine</td></tr>
+<tr><td>iPhone 13 系 / SE(第3世代) / 14 / 14 Plus</td><td>A15</td><td>15.0（14/14 Plusは16.0）</td><td><span class="badge b-warn">17.3.1 ※</span></td><td>Dopamine 3.0</td></tr>
+<tr><td>iPhone 14 Pro / 14 Pro Max</td><td>A16</td><td>16.0</td><td><span class="badge b-ok">17.3.1</span></td><td>Dopamine</td></tr>
+<tr><td>iPhone 15 / 15 Plus</td><td>A16</td><td>17.0</td><td><span class="badge b-ok">17.3.1</span></td><td>Dopamine</td></tr>
+<tr><td>iPhone 15 Pro / 15 Pro Max</td><td>A17 Pro</td><td>17.0</td><td><span class="badge b-ok">17.3.1</span></td><td>Dopamine</td></tr>
+<tr><td>iPhone 16 / 16 Plus / 16 Pro / 16 Pro Max / 16e</td><td>A18 系</td><td>18.0（16eは18.3）</td><td><span class="badge b-no">なし</span></td><td>—</td></tr>
+<tr><td>iPhone 17 / Air / 17 Pro / 17 Pro Max</td><td>A19 系</td><td>26.0</td><td><span class="badge b-no">なし</span></td><td>—</td></tr>
+<tr><td>iPhone 18 Pro / 18 Pro Max（2026年9月発売）</td><td>A20 Pro</td><td>iOS 27 系</td><td><span class="badge b-no">なし</span></td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+<p class="sub">※ iPhone 13 系は、公式ガイドの機種別ページと Dopamine 3.0 の発表内容が食い違っています。詳細は下の A15 の項を参照してください。</p>
+
+<h2>チップ別の詳細（iOSバージョン範囲ごと）</h2>
+
+<div class="card">
+<h3>A11：iPhone 8 / 8 Plus / X</h3>
+<div class="meta">iOS 16.7.x が最終。iPhone 8 Plus 専用ページは取得できなかったため、同じ A11 の iPhone X の表を適用しています。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>11.0 〜 11.4.1</td><td><span class="badge b-ok">可</span></td><td>unc0ver</td></tr>
+<tr><td>12.0 〜 13.7</td><td><span class="badge b-ok">可</span></td><td>Amethyst</td></tr>
+<tr><td>14.0 〜 14.8.1</td><td><span class="badge b-ok">可</span></td><td>Taurine</td></tr>
+<tr><td>15.0 〜 16.6.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>16.7 〜 16.7.16</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>15.0 以降（全範囲）</td><td><span class="badge b-warn">別手段</span></td><td>palera1n（checkm8・PC 必須・再起動ごとに再実行。A11 はパスコード無効化が必要）</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="card">
+<h3>A12：iPhone XS / XS Max / XR</h3>
+<div class="meta">iOS 26 非対応（最終は iOS 18.7.10）。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>12.0 〜 13.7</td><td><span class="badge b-ok">可</span></td><td>Amethyst</td></tr>
+<tr><td>14.0 〜 14.8.1</td><td><span class="badge b-ok">可</span></td><td>Taurine</td></tr>
+<tr><td>15.0 〜 16.6.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>16.7 〜 16.7.2</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>17.0</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>17.0.1 〜 18.7.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>18.7.2 〜 18.7.10</td><td><span class="badge b-no">不可</span></td><td>ツールなし</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="card">
+<h3>A13：iPhone 11 / 11 Pro / 11 Pro Max / SE（第2世代）</h3>
+<div class="meta">iOS 26 に対応する最古のチップ世代。表は iPhone 11 のページによります。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>13.0 〜 13.7</td><td><span class="badge b-ok">可</span></td><td>Amethyst</td></tr>
+<tr><td>14.0 〜 14.8.1</td><td><span class="badge b-ok">可</span></td><td>Taurine</td></tr>
+<tr><td>15.0 〜 16.6.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>16.7 〜 16.7.2</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>17.0</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>17.0.1 〜 18.7.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>18.7.2 〜 18.7.8</td><td><span class="badge b-no">不可</span></td><td>ツールなし</td></tr>
+<tr><td>26.0 〜 26.0.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine 3.0（momentarius）</td></tr>
+<tr><td>26.1 〜 27.0</td><td><span class="badge b-no">不可</span></td><td>ツールなし</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="card">
+<h3>A14：iPhone 12 mini / 12 / 12 Pro / 12 Pro Max</h3>
+<div class="meta">初期 iOS 14.1。iOS 26 まで更新できる端末ですが、脱獄は 17.3.1 までです。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>14.1 〜 14.8.1</td><td><span class="badge b-ok">可</span></td><td>Taurine</td></tr>
+<tr><td>15.0 〜 16.6.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>16.7 〜 16.7.2</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>17.0</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>17.0.1 〜 17.3.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine 3.0（Titan）</td></tr>
+<tr><td>17.4 〜 26.6.2</td><td><span class="badge b-no">不可</span></td><td>ツールなし（SPTM バイパスなし）</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="card">
+<h3>A15：iPhone 13 mini / 13 / 13 Pro / 13 Pro Max / SE（第3世代）／ iPhone 14 / 14 Plus</h3>
+<div class="meta">初期 iOS：13 系 15.0、SE 第3世代 15.4、14 / 14 Plus 16.0。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>15.0 〜 16.5</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>16.5.1 〜 17.3.1</td><td><span class="badge b-warn">可（要確認）</span></td><td>Dopamine 3.0（Titan）</td></tr>
+<tr><td>17.4 以降</td><td><span class="badge b-no">不可</span></td><td>ツールなし</td></tr>
+</tbody></table></div>
+<div class="note">Dopamine 3.0 の発表では、A15〜A17 と M2 は iOS 16.5.1〜17.3.1 に対応とされています。一方、iOS Guide の iPhone 13 ページは、16.7〜16.7.2 と 17.0.1 以降を「N/A」、16.5.1〜16.6.1 と 17.0 を nathanlr としています。ページが Dopamine 3.0 に追随していない可能性があるため、実機で試す前に Dopamine の公式配布ページで対応を確認してください。</div>
+</div>
+
+<div class="card">
+<h3>A16：iPhone 14 Pro / 14 Pro Max</h3>
+<div class="meta">初期 iOS 16.0。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>16.0 〜 16.6.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>16.7 〜 16.7.2</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>17.0</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>17.0.1 〜 17.3.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>17.4 〜 27.0</td><td><span class="badge b-no">不可</span></td><td>ツールなし</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="card">
+<h3>A16：iPhone 15 / 15 Plus</h3>
+<div class="meta">初期 iOS 17.0。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>17.0</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>17.0.1 〜 17.3.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>17.4 〜 27.0</td><td><span class="badge b-no">不可</span></td><td>ツールなし</td></tr>
+</tbody></table></div>
+<p class="sub" style="margin:8px 0 0">A16 の 15 / 15 Plus は、A16 の 14 Pro と同じ対応範囲（Titan）です。専用ページの取得はしていません。</p>
+</div>
+
+<div class="card">
+<h3>A17 Pro：iPhone 15 Pro / 15 Pro Max</h3>
+<div class="meta">初期 iOS 17.0。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>17.0</td><td><span class="badge b-ok">可</span></td><td>Dopamine（TrollStore 経由）</td></tr>
+<tr><td>17.0.1 〜 17.3.1</td><td><span class="badge b-ok">可</span></td><td>Dopamine</td></tr>
+<tr><td>17.4 〜 27.0</td><td><span class="badge b-no">不可</span></td><td>ツールなし</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="card">
+<h3>A18 系：iPhone 16 / 16 Plus / 16 Pro / 16 Pro Max / 16e</h3>
+<div class="meta">初期 iOS 18.0（16e は 18.3）。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>18.0 〜 26.x 全て</td><td><span class="badge b-no">不可</span></td><td>公開された脱獄ツールなし</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="card">
+<h3>A19 系：iPhone 17 / Air / 17 Pro / 17 Pro Max</h3>
+<div class="meta">初期 iOS 26.0。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>26.0 以降 全て</td><td><span class="badge b-no">不可</span></td><td>公開された脱獄ツールなし</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="card">
+<h3>A20 系：iPhone 18 Pro / 18 Pro Max（2026年9月発売）</h3>
+<div class="meta">iPhone 18 / 18e は2027年春発売の予定で、未発売です。iPhone Duo（折りたたみ）も同時発表と報じられていますが、機種別の脱獄情報は確認できていません。</div>
+<div class="scroll"><table>
+<thead><tr><th>iOS</th><th>状況</th><th>手段</th></tr></thead>
+<tbody>
+<tr><td>全バージョン</td><td><span class="badge b-no">不可</span></td><td>公開された脱獄ツールなし（iOS 27 は研究段階）</td></tr>
+</tbody></table></div>
+</div>
+
+<h2>共通の注意点</h2>
+<div class="card">
+<ul>
+<li>Apple が署名を止めた古い iOS には通常戻せません。脱獄したい端末は、対応範囲を超える更新をしないでください。</li>
+<li>Dopamine は「semi-untethered」方式で、再起動のたびにアプリから再脱獄します。rootless のため tweak は rootless 対応版が必要です。</li>
+<li>palera1n が使う checkm8 は A11 以前だけが対象で、A12 以降には使えません。</li>
+<li>A12 / A13 向けの BootROM 脆弱性「usbliter8」（2026年6月公開）は概念実証で、単独の脱獄ツールではありません。</li>
+<li>TrollStore が使えるのは iOS 14.0〜16.6.1 と 17.0 までで、iOS 18 以降は非対応です。</li>
+<li>表中の「TrollStore 経由」は、該当 iOS で TrollStore を使って Dopamine を入れる手順を指します（iOS Guide の表記）。</li>
+<li>「iOS 18.7.x でオンライン脱獄できる」とうたうサイトは、本ページの公式情報と食い違います。有料の「脱獄」を含め、信用しないでください。</li>
+</ul>
+</div>
+
+<p class="foot">
+出典：<a href="https://ios.cfw.guide/">iOS Guide（機種別 Firmware Selection：iPhone X / XS / XR / 11 / 12 / 13 / 14 Pro / 15 Pro）</a>、
+<a href="https://theapplewiki.com/wiki/Dopamine">The Apple Wiki - Dopamine</a>、
+<a href="https://www.iclarified.com/jailbreak">iClarified Jailbreak Guide</a>、
+<a href="https://www.iclarified.com/101697/dopamine-30-jailbreak-released-with-ios-1731-support-ios-26-on-a12a13">iClarified - Dopamine 3.0</a>、
+<a href="https://www.macrumors.com/roundup/iphone-18-pro/">MacRumors - iPhone 18 Pro</a>。<br>
+機種ごとの専用ページを直接確認していない箇所（iPhone 8 Plus、15 / 15 Plus、SE 各世代、16e）は、同じチップの機種の表から補っています。脱獄の可否は変わり得るため、実行前に最新情報を確認してください。
+</p>
+
+</div>
+</body>
+</html>
