@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Pocket 3 撮影設定ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* === TOKEN SYSTEM === */
+:root{
+  --bg:#edf1ef;--surface:#f8faf9;--fg:#13201b;--muted:#52625b;--line:#c9d3ce;
+  --pcb:#0d6b4d;--gold:#9a6f0c;--gold-soft:#f1e3b8;--hit:#dff0e8;--warn:#8a2a1c;
+  --sky:#1264a3;--sky-soft:#ddeeff;
+  --font-display:"Barlow Condensed","Noto Sans JP",sans-serif;
+  --font-body:"Noto Sans JP",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1613;--surface:#16211c;--fg:#e4ede8;--muted:#9bada5;--line:#2b3a33;
+  --pcb:#4fc79a;--gold:#e0b64a;--gold-soft:#3a2f10;--hit:#173629;--warn:#ff9d8a;
+  --sky:#60aaee;--sky-soft:#0d2037;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e1613;--surface:#16211c;--fg:#e4ede8;--muted:#9bada5;--line:#2b3a33;
+  --pcb:#4fc79a;--gold:#e0b64a;--gold-soft:#3a2f10;--hit:#173629;--warn:#ff9d8a;
+  --sky:#60aaee;--sky-soft:#0d2037;
+  color-scheme:dark;
+}
+/* === BASE === */
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.75;padding-inline:16px;padding-block:0 64px;margin:0}
+.wrap{max-width:1000px;margin-inline:auto}
+/* === HEADER === */
+header.top{padding-block:40px 24px;border-bottom:2px solid var(--fg)}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;color:var(--pcb);text-transform:uppercase}
+h1{font-family:var(--font-display);font-weight:700;font-size:clamp(36px,8vw,72px);line-height:1;margin:8px 0 12px;letter-spacing:.01em}
+.lead{max-width:62ch;color:var(--muted);margin:0}
+/* === NAV === */
+nav.idx{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding-block:10px;margin-inline:-16px;padding-inline:16px}
+nav.idx a{flex:none;font-family:var(--font-mono);font-size:12px;color:var(--fg);text-decoration:none;border:1px solid var(--line);padding:4px 10px;border-radius:3px;background:var(--surface)}
+nav.idx a:hover{border-color:var(--pcb);color:var(--pcb)}
+/* === SECTIONS === */
+section{padding-block:40px 8px}
+h2{font-family:var(--font-display);font-weight:700;font-size:32px;line-height:1.1;margin:0 0 4px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 small{font-family:var(--font-mono);font-weight:400;font-size:12px;color:var(--gold);letter-spacing:.08em}
+p.sub{color:var(--muted);margin:0 0 16px;max-width:68ch}
+/* === TABLES === */
+.scroll{overflow-x:auto;border:1px solid var(--line);background:var(--surface);border-radius:4px}
+table{border-collapse:collapse;width:100%;min-width:540px;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.k{font-family:var(--font-mono);font-weight:600;white-space:nowrap;min-width:120px}
+td.v{font-weight:500}
+td.n{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hit td{background:var(--hit)}
+/* === TAGS / BADGES === */
+.tag{font-family:var(--font-mono);font-size:11px;background:var(--pcb);color:var(--bg);padding:1px 6px;border-radius:2px;margin-left:4px;white-space:nowrap}
+.tag.sky{background:var(--sky)}
+.tag.gold{background:var(--gold)}
+/* === NOTES === */
+.note{border-left:3px solid var(--gold);background:var(--gold-soft);padding:10px 14px;margin-top:14px;font-size:14px;max-width:72ch;border-radius:0 4px 4px 0}
+.note.tip{border-color:var(--pcb);background:var(--hit)}
+.note.warn{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,var(--surface))}
+.note b{font-weight:700}
+/* === SCENE CARDS GRID === */
+.scene-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:8px}
+.scene-card{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-width:0}
+.scene-card-head{padding:14px 16px 10px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start}
+.scene-icon{font-size:28px;line-height:1;flex:none;margin-top:2px}
+.scene-title{font-family:var(--font-display);font-size:22px;font-weight:700;line-height:1.1;margin:0}
+.scene-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:2px}
+.scene-card-body{padding:12px 16px 14px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13.5px}
+.kv dt{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding-top:1px;white-space:nowrap}
+.kv dd{margin:0;font-weight:500}
+.kv dd span.val{color:var(--pcb);font-weight:700}
+/* === COMMON SETTINGS TABLE === */
+.common{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.common table{min-width:400px}
+/* === SHUTTER RULE === */
+.rule-box{border:2px solid var(--pcb);border-radius:6px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start;max-width:680px;margin-top:16px}
+.rule-formula{font-family:var(--font-display);font-size:clamp(28px,5vw,42px);font-weight:700;color:var(--pcb);white-space:nowrap;line-height:1.1}
+.rule-desc{font-size:14px;color:var(--muted)}
+.rule-desc b{color:var(--fg)}
+/* === FOOTER === */
+footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;max-width:72ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">DJI Osmo Pocket 3 — Field Guide</div>
+  <h1>撮影シーン別<br>設定ガイド</h1>
+  <p class="lead">シーンごとの最適解をまとめたリファレンス。解像度・フレームレート・手ブレ補正・カラープロファイルを場面に合わせて選ぶための一覧です。</p>
+</header>
+
+<nav class="idx" aria-label="セクション一覧">
+  <a href="#scenes">シーン別設定</a>
+  <a href="#common">共通設定</a>
+  <a href="#shutter">シャッター則</a>
+  <a href="#card">SDカード</a>
+  <a href="#post">取り込み</a>
+</nav>
+
+<!-- ======================== SCENE CARDS ======================== -->
+<section id="scenes">
+  <h2>シーン別 推奨設定 <small>SCENE PRESETS</small></h2>
+  <p class="sub">シーンをクリックしても何も起きません。そのまま読んでください。</p>
+
+  <div class="scene-grid">
+
+    <!-- 日常 Vlog -->
+    <div class="scene-card">
+      <div class="scene-card-head">
+        <div class="scene-icon">🚶</div>
+        <div>
+          <div class="scene-title">日常 Vlog・街歩き</div>
+          <div class="scene-sub">EVERYDAY / STREET</div>
+        </div>
+      </div>
+      <div class="scene-card-body">
+        <dl class="kv">
+          <dt>解像度</dt>     <dd><span class="val">4K 30fps</span></dd>
+          <dt>カラー</dt>     <dd><span class="val">Normal</span>（そのまま公開向け）</dd>
+          <dt>手ブレ補正</dt> <dd><span class="val">RockSteady</span></dd>
+          <dt>AF</dt>         <dd>顔トラッキング ON</dd>
+          <dt>シャッター</dt> <dd>1/60 s（180° 則）</dd>
+          <dt>ISO</dt>        <dd>Auto（上限 800 推奨）</dd>
+          <dt>ND</dt>         <dd>晴天時 ND8〜16</dd>
+          <dt>備考</dt>       <dd>D-Log M 不要。手軽さ最優先。</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- 旅行・風景 -->
+    <div class="scene-card">
+      <div class="scene-card-head">
+        <div class="scene-icon">🏔</div>
+        <div>
+          <div class="scene-title">旅行・風景</div>
+          <div class="scene-sub">TRAVEL / LANDSCAPE</div>
+        </div>
+      </div>
+      <div class="scene-card-body">
+        <dl class="kv">
+          <dt>解像度</dt>     <dd><span class="val">4K 30fps</span></dd>
+          <dt>カラー</dt>     <dd><span class="val">D-Log M</span>（後編集で色域最大化）</dd>
+          <dt>手ブレ補正</dt> <dd><span class="val">HorizonSteady</span></dd>
+          <dt>AF</dt>         <dd>エリア指定 or MF（遠景）</dd>
+          <dt>シャッター</dt> <dd>1/60 s</dd>
+          <dt>ISO</dt>        <dd>Auto（上限 400）</dd>
+          <dt>ND</dt>         <dd>ND16〜64（快晴）</dd>
+          <dt>備考</dt>       <dd>DaVinci Resolve で LUT 適用前提。</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- スポーツ・アクション -->
+    <div class="scene-card">
+      <div class="scene-card-head">
+        <div class="scene-icon">🏄</div>
+        <div>
+          <div class="scene-title">スポーツ・アクション</div>
+          <div class="scene-sub">SPORTS / ACTION</div>
+        </div>
+      </div>
+      <div class="scene-card-body">
+        <dl class="kv">
+          <dt>解像度</dt>     <dd><span class="val">4K 60fps</span> / スロー: 1080p 120fps</dd>
+          <dt>カラー</dt>     <dd>Normal（レスポンス重視）</dd>
+          <dt>手ブレ補正</dt> <dd><span class="val">RockSteady MAX</span></dd>
+          <dt>AF</dt>         <dd>スポーツモード（予測AF）</dd>
+          <dt>シャッター</dt> <dd>1/120〜1/500 s（被写体ブレ防止）</dd>
+          <dt>ISO</dt>        <dd>Auto</dd>
+          <dt>ND</dt>         <dd>ND8〜32（輝度合わせ）</dd>
+          <dt>備考</dt>       <dd>スロー用 120fps は SD カードに高負荷。V30 以上必須。</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- 夜景・暗所 -->
+    <div class="scene-card">
+      <div class="scene-card-head">
+        <div class="scene-icon">🌃</div>
+        <div>
+          <div class="scene-title">夜景・暗所</div>
+          <div class="scene-sub">NIGHT / LOW LIGHT</div>
+        </div>
+      </div>
+      <div class="scene-card-body">
+        <dl class="kv">
+          <dt>解像度</dt>     <dd><span class="val">4K 24fps</span>（露光時間を稼ぐ）</dd>
+          <dt>カラー</dt>     <dd><span class="val">D-Log M</span></dd>
+          <dt>手ブレ補正</dt> <dd>RockSteady（三脚時は OFF）</dd>
+          <dt>AF</dt>         <dd>顔優先 or MF（ピン固定）</dd>
+          <dt>シャッター</dt> <dd>1/50 s（MF 固定推奨）</dd>
+          <dt>ISO</dt>        <dd>手動 400〜3200（ノイズ確認しながら）</dd>
+          <dt>ND</dt>         <dd>ND なし（暗所では外す）</dd>
+          <dt>備考</dt>       <dd>ISO 3200 超はノイズ顕著。外部マイク併用推奨。</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- インタビュー・トーク -->
+    <div class="scene-card">
+      <div class="scene-card-head">
+        <div class="scene-icon">🎙</div>
+        <div>
+          <div class="scene-title">インタビュー・トーク</div>
+          <div class="scene-sub">INTERVIEW / TALKING HEAD</div>
+        </div>
+      </div>
+      <div class="scene-card-body">
+        <dl class="kv">
+          <dt>解像度</dt>     <dd><span class="val">4K 24fps</span> or 30fps</dd>
+          <dt>カラー</dt>     <dd>D-Log M（肌色調整しやすい）</dd>
+          <dt>手ブレ補正</dt> <dd>OFF or RockSteady（固定撮り）</dd>
+          <dt>AF</dt>         <dd><span class="val">顔トラッキング優先</span></dd>
+          <dt>シャッター</dt> <dd>1/50〜1/60 s</dd>
+          <dt>ISO</dt>        <dd>手動（フリッカー防止）</dd>
+          <dt>ND</dt>         <dd>屋外時 ND8〜16</dd>
+          <dt>備考</dt>       <dd>外部マイク（DJI Mic 等）を USB-C 経由で接続。</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- タイムラプス -->
+    <div class="scene-card">
+      <div class="scene-card-head">
+        <div class="scene-icon">⏱</div>
+        <div>
+          <div class="scene-title">タイムラプス</div>
+          <div class="scene-sub">TIMELAPSE / HYPERLAPSE</div>
+        </div>
+      </div>
+      <div class="scene-card-body">
+        <dl class="kv">
+          <dt>モード</dt>     <dd><span class="val">Timelapse / Hyperlapse</span></dd>
+          <dt>解像度</dt>     <dd>4K（最大画質）</dd>
+          <dt>カラー</dt>     <dd>D-Log M（空のグラデが豊か）</dd>
+          <dt>WB</dt>         <dd><span class="val">マニュアル固定</span>（変色防止）</dd>
+          <dt>露出</dt>       <dd>マニュアル（Auto は禁止）</dd>
+          <dt>シャッター</dt> <dd>間隔の 1/2 以下（例: 3 s間隔→1/6 s 以下）</dd>
+          <dt>ND</dt>         <dd>ND64〜400（スローシャッター向け）</dd>
+          <dt>備考</dt>       <dd>電池消費大。モバイルバッテリー常時接続推奨。</dd>
+        </dl>
+      </div>
+    </div>
+
+  </div><!-- /scene-grid -->
+</section>
+
+<!-- ======================== COMMON SETTINGS ======================== -->
+<section id="common">
+  <h2>共通設定 <small>COMMON SETTINGS</small></h2>
+  <p class="sub">全シーンで意識しておきたい基本パラメータ。</p>
+
+  <div class="scroll common">
+    <table>
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>推奨値 / 設定</th>
+          <th>理由・備考</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hit">
+          <td class="k">SD カード</td>
+          <td class="v">V30 / U3 / A2 、256 GB 以上</td>
+          <td>4K 60fps 連続録画に最低 30 MB/s 書込速度が必要</td>
+        </tr>
+        <tr>
+          <td class="k">ファイル形式</td>
+          <td class="v">MP4（H.264）or MOV（H.265）</td>
+          <td>H.265 は画質↑ファイルサイズ↓。古い Mac は H.264 推奨</td>
+        </tr>
+        <tr>
+          <td class="k">ホワイトバランス</td>
+          <td class="v">晴天: 5600K、曇り: 6200K</td>
+          <td>D-Log M 使用時は必ずマニュアル固定</td>
+        </tr>
+        <tr>
+          <td class="k">ND フィルター</td>
+          <td class="v">屋外昼間: ND8〜ND64</td>
+          <td>180° シャッター則を守るために必要。マグネット着脱式が便利</td>
+        </tr>
+        <tr>
+          <td class="k">ジンバルモード</td>
+          <td class="v">FPV / Pan Follow / Tilt Lock を場面で切替</td>
+          <td>Tilt Lock は水平ラインが絵になる景観に効果的</td>
+        </tr>
+        <tr>
+          <td class="k">フォーカス</td>
+          <td class="v">顔トラッキング ON（人物）/ MF（固定景色）</td>
+          <td>MF は「ピントリング」を長押しで設定画面が出る</td>
+        </tr>
+        <tr>
+          <td class="k">音声</td>
+          <td class="v">内蔵マイク: 144° 広角 or 指向性</td>
+          <td>屋外の風音はフォームウィンドジャマー併用推奨</td>
+        </tr>
+        <tr>
+          <td class="k">充電</td>
+          <td class="v">撮影前にフル充電、予備バッテリー1本以上</td>
+          <td>4K 60fps は約 70 分で電池切れ。冬は大幅に短縮</td>
+        </tr>
+        <tr>
+          <td class="k">ファームウェア</td>
+          <td class="v">DJI Mimo アプリで最新版へ更新</td>
+          <td>安定性と機能追加のため撮影前に必ず確認</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ======================== SHUTTER RULE ======================== -->
+<section id="shutter">
+  <h2>180° シャッター則 <small>180-DEGREE RULE</small></h2>
+  <p class="sub">自然な動きのブラーを得るための基本法則。フレームレートの 2 倍がシャッター速度の分母になります。</p>
+
+  <div class="rule-box">
+    <div class="rule-formula">SS = 1 / (fps × 2)</div>
+    <div class="rule-desc">
+      <b>24fps → 1/48 s（実用: 1/50 s）</b><br>
+      <b>30fps → 1/60 s</b><br>
+      <b>60fps → 1/120 s</b><br>
+      <b>120fps → 1/240 s</b><br>
+      <br>
+      屋外では SS を守ると露出オーバーになるため、<b>ND フィルターで光量調整</b>します。
+    </div>
+  </div>
+
+  <div class="note tip" style="margin-top:18px">
+    <b>ND フィルター選びの目安</b><br>
+    快晴 (EV 15)：ND64〜ND128 ／ 曇り (EV 13)：ND16〜ND32 ／ 薄曇り (EV 12)：ND8〜ND16
+  </div>
+</section>
+
+<!-- ======================== SD CARD ======================== -->
+<section id="card">
+  <h2>SD カード選び <small>RECOMMENDED CARDS</small></h2>
+  <p class="sub">Pocket 3 は UHS-I インターフェース搭載。UHS-II カードも動作しますが速度は UHS-I 上限（約 104 MB/s）に制限されます。</p>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>製品</th>
+          <th>容量</th>
+          <th>読込</th>
+          <th>書込</th>
+          <th>クラス</th>
+          <th>適合度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hit">
+          <td class="k">SanDisk Extreme</td>
+          <td class="n">256 GB</td>
+          <td class="n">190 MB/s</td>
+          <td class="n">130 MB/s</td>
+          <td>V30 / U3 / A2</td>
+          <td><span class="tag">最適</span></td>
+        </tr>
+        <tr class="hit">
+          <td class="k">Samsung PRO Plus</td>
+          <td class="n">256 GB</td>
+          <td class="n">180 MB/s</td>
+          <td class="n">130 MB/s</td>
+          <td>V30 / U3 / A2</td>
+          <td><span class="tag">最適</span></td>
+        </tr>
+        <tr>
+          <td class="k">SanDisk Ultra</td>
+          <td class="n">256 GB</td>
+          <td class="n">150 MB/s</td>
+          <td class="n">—</td>
+          <td>U1 / A1</td>
+          <td><span class="tag sky">可（4K 30fps まで）</span></td>
+        </tr>
+        <tr>
+          <td class="k">不明ブランド大容量</td>
+          <td class="n">512 GB〜</td>
+          <td class="n">未公表</td>
+          <td class="n">未公表</td>
+          <td>不明</td>
+          <td><span class="tag" style="background:var(--warn)">非推奨</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note warn" style="margin-top:12px">
+    <b>注意:</b> 1 TB など極端に大容量でリーズナブルな無名ブランドカードは書込速度が実態と乖離しているケースがあります。4K 録画中に突然停止する原因になるため、SanDisk / Samsung / Lexar などの主要ブランドを選んでください。
+  </div>
+</section>
+
+<!-- ======================== IMPORT ======================== -->
+<section id="post">
+  <h2>MacBook への取り込み <small>IMPORT WORKFLOW</small></h2>
+  <p class="sub">Pocket 3 → MacBook Pro のスムーズなフローです。</p>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>ステップ</th>
+          <th>方法</th>
+          <th>備考</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="k">① 取り込み</td>
+          <td>SD カードリーダー（USB-C）で直接コピー</td>
+          <td>最速。Thunderbolt 対応リーダーなら実測 90〜100 MB/s</td>
+        </tr>
+        <tr class="hit">
+          <td class="k">② 保存先</td>
+          <td>外付け SSD（M.2 NVMe、USB-C）</td>
+          <td>動画は容量大。内蔵 SSD を圧迫しないよう外付けを推奨</td>
+        </tr>
+        <tr>
+          <td class="k">③ 編集</td>
+          <td>DaVinci Resolve (無料) / Final Cut Pro</td>
+          <td>D-Log M → DJI 公式 LUT を適用。Resolve は LUT 管理が強力</td>
+        </tr>
+        <tr>
+          <td class="k">④ LUT 入手</td>
+          <td>DJI 公式サイト「D-Log M to Rec.709」LUT</td>
+          <td>D-Log M 撮影素材に適用して標準色域に変換</td>
+        </tr>
+        <tr>
+          <td class="k">⑤ 書き出し</td>
+          <td>H.265 4K / YouTube 向けなら H.264 4K</td>
+          <td>Apple ProRes はファイルが巨大になるため SNS 向けには不向き</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note tip" style="margin-top:14px">
+    <b>DJI Mimo アプリ経由の転送は遅い。</b> Wi-Fi 転送は最大でも 30〜40 MB/s 程度。大量素材はカードリーダーが圧倒的に速いです。
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="wrap">
+    DJI Osmo Pocket 3 Field Guide — 設定値は 2025 年時点のファームウェアに基づいています。<br>
+    仕様変更の可能性があるため DJI 公式ドキュメントも合わせてご確認ください。
+  </div>
+</footer>
+</body>
+</html>
