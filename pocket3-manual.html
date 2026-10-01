@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Osmo Pocket 3 完全マニュアル</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* ===== TOKEN SYSTEM ===== */
+:root{
+  --bg:#edf1ef; --surface:#f8faf9; --surface2:#f0f4f2;
+  --fg:#13201b; --muted:#52625b; --faint:#8a9c94;
+  --line:#c9d3ce; --line2:#dde5e1;
+  --pcb:#0d6b4d; --pcb-soft:#dff0e8;
+  --gold:#9a6f0c; --gold-soft:#f1e3b8;
+  --sky:#1060a0; --sky-soft:#ddeeff;
+  --warn:#8a2a1c; --warn-soft:#fce8e4;
+  --font-display:"Barlow Condensed","Noto Sans JP",sans-serif;
+  --font-body:"Noto Sans JP",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1613; --surface:#16211c; --surface2:#1c2a23;
+  --fg:#e4ede8; --muted:#9bada5; --faint:#5d726a;
+  --line:#2b3a33; --line2:#223029;
+  --pcb:#4fc79a; --pcb-soft:#173629;
+  --gold:#e0b64a; --gold-soft:#3a2f10;
+  --sky:#60aaee; --sky-soft:#0d2037;
+  --warn:#ff9d8a; --warn-soft:#3d1510;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e1613; --surface:#16211c; --surface2:#1c2a23;
+  --fg:#e4ede8; --muted:#9bada5; --faint:#5d726a;
+  --line:#2b3a33; --line2:#223029;
+  --pcb:#4fc79a; --pcb-soft:#173629;
+  --gold:#e0b64a; --gold-soft:#3a2f10;
+  --sky:#60aaee; --sky-soft:#0d2037;
+  --warn:#ff9d8a; --warn-soft:#3d1510;
+  color-scheme:dark;
+}
+
+/* ===== RESET & BASE ===== */
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.8;margin:0;padding-inline:16px;padding-block:0 80px}
+.wrap{max-width:1040px;margin-inline:auto}
+a{color:var(--pcb);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ===== HEADER ===== */
+header.top{padding-block:48px 28px;border-bottom:3px solid var(--fg)}
+.eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;color:var(--pcb);text-transform:uppercase;margin-bottom:10px}
+h1{font-family:var(--font-display);font-weight:700;font-size:clamp(38px,8vw,80px);line-height:.95;margin:0 0 16px;letter-spacing:.005em;text-wrap:balance}
+.lead{max-width:64ch;color:var(--muted);margin:0;font-size:15.5px}
+
+/* ===== STICKY NAV ===== */
+nav.toc{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px;padding-block:8px;overflow-x:auto;white-space:nowrap}
+.toc-inner{display:inline-flex;gap:4px}
+nav.toc a{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--fg);text-decoration:none;border:1px solid var(--line);padding:4px 10px;border-radius:3px;background:var(--surface)}
+nav.toc a:hover{border-color:var(--pcb);color:var(--pcb)}
+
+/* ===== SECTIONS ===== */
+section{padding-block:48px 4px}
+section+section{border-top:1px solid var(--line2)}
+.sec-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+h2{font-family:var(--font-display);font-weight:700;font-size:clamp(26px,5vw,38px);line-height:1.05;margin:0 0 6px;text-wrap:balance}
+h2 em{font-style:normal;color:var(--pcb)}
+h3{font-family:var(--font-display);font-size:22px;font-weight:700;margin:28px 0 8px;line-height:1.1}
+h4{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--gold);margin:20px 0 8px;text-transform:uppercase}
+p.sub{color:var(--muted);margin:0 0 20px;max-width:68ch}
+
+/* ===== TABLES ===== */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:5px;background:var(--surface);margin-bottom:4px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+.scroll.wide table{min-width:680px}
+.scroll.mid table{min-width:520px}
+th{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:var(--surface2);padding:8px 12px;white-space:nowrap;border-bottom:1px solid var(--line)}
+td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.k{font-family:var(--font-mono);font-weight:600;white-space:nowrap;color:var(--fg);width:1%}
+td.v{font-weight:500}
+td.n{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hit td{background:var(--pcb-soft)}
+tr.alt td{background:var(--surface2)}
+
+/* ===== BADGES ===== */
+.badge{display:inline-block;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;padding:2px 7px;border-radius:2px;white-space:nowrap;font-weight:600}
+.badge.green{background:var(--pcb);color:var(--bg)}
+.badge.gold{background:var(--gold);color:var(--bg)}
+.badge.sky{background:var(--sky);color:var(--bg)}
+.badge.warn{background:var(--warn);color:var(--bg)}
+.badge.line{background:transparent;border:1px solid var(--line);color:var(--muted)}
+
+/* ===== CALLOUT NOTES ===== */
+.note{border-left:3px solid var(--gold);background:var(--gold-soft);padding:10px 14px;font-size:13.5px;border-radius:0 4px 4px 0;max-width:72ch}
+.note.tip{border-color:var(--pcb);background:var(--pcb-soft)}
+.note.sky{border-color:var(--sky);background:var(--sky-soft)}
+.note.warn{border-color:var(--warn);background:var(--warn-soft)}
+.note b{font-weight:700}
+
+/* ===== SPEC GRID ===== */
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:5px;overflow:hidden;margin-bottom:16px}
+.spec-cell{background:var(--surface);padding:12px 14px;min-width:0}
+.spec-cell dt{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+.spec-cell dd{margin:0;font-weight:500;font-size:14px}
+.spec-cell dd strong{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--pcb);display:block;line-height:1.1}
+
+/* ===== PARTS DIAGRAM ===== */
+.diagram-wrap{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px;overflow-x:auto}
+.diagram-wrap svg{max-width:100%;height:auto;display:block;margin-inline:auto}
+
+/* ===== BUTTON GRID ===== */
+.btn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:8px}
+.btn-card{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:14px 16px;min-width:0}
+.btn-card-head{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.btn-sym{font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--pcb);line-height:1;flex:none}
+.btn-name{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.btn-card ul{margin:0;padding-left:1.3em;font-size:13.5px}
+.btn-card li{margin-bottom:3px}
+
+/* ===== MODE CARDS ===== */
+.mode-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.mode-card{background:var(--surface);border:1px solid var(--line);border-radius:5px;overflow:hidden;min-width:0}
+.mode-head{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--surface2);display:flex;gap:12px;align-items:flex-start}
+.mode-icon{font-size:24px;flex:none;margin-top:2px}
+.mode-title{font-family:var(--font-display);font-size:20px;font-weight:700;margin:0}
+.mode-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:1px}
+.mode-body{padding:12px 16px 14px;font-size:13.5px}
+.mode-body dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:0}
+.mode-body dt{font-family:var(--font-mono);font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;padding-top:2px;white-space:nowrap}
+.mode-body dd{margin:0;font-weight:500}
+.mode-body dd b{color:var(--pcb)}
+
+/* ===== WORKFLOW STEPS ===== */
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:32px 1fr;gap:12px;padding-block:14px;border-bottom:1px solid var(--line2)}
+.step:last-child{border-bottom:0}
+.step::before{counter-increment:step;content:counter(step);font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--pcb);background:var(--pcb-soft);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px}
+.step-content{min-width:0}
+.step-title{font-family:var(--font-display);font-size:18px;font-weight:700;margin:0 0 4px}
+.step-body{color:var(--muted);font-size:13.5px;margin:0}
+
+/* ===== COLOR PROFILE COMPARISON ===== */
+.cmp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:640px}
+.cmp-card{border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.cmp-head{padding:10px 14px;font-family:var(--font-display);font-size:18px;font-weight:700;border-bottom:1px solid var(--line)}
+.cmp-head.normal{background:var(--sky-soft);color:var(--sky)}
+.cmp-head.dlog{background:var(--pcb-soft);color:var(--pcb)}
+.cmp-body{padding:10px 14px;font-size:13px;background:var(--surface)}
+.cmp-body li{margin-bottom:4px}
+
+/* ===== STABILIZATION GRID ===== */
+.stab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.stab-cell{background:var(--surface);padding:14px}
+.stab-name{font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:4px;color:var(--pcb)}
+.stab-desc{font-size:13px;color:var(--muted)}
+
+/* ===== ACCORDION ===== */
+details{border:1px solid var(--line);border-radius:4px;background:var(--surface);margin-bottom:8px}
+details+details{margin-top:0}
+summary{padding:12px 16px;font-family:var(--font-display);font-size:18px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px}
+summary::after{content:"＋";font-family:var(--font-mono);font-size:16px;color:var(--pcb);flex:none}
+details[open] summary::after{content:"－"}
+details[open] summary{border-bottom:1px solid var(--line)}
+.details-body{padding:14px 16px;font-size:14px}
+.details-body p{margin:0 0 8px}
+.details-body ul{margin:0 0 8px;padding-left:1.4em}
+.details-body li{margin-bottom:4px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .cmp-wrap{grid-template-columns:1fr}
+  .stab-grid{grid-template-columns:1fr 1fr}
+  .btn-grid{grid-template-columns:1fr}
+}
+
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== HEADER ===== -->
+<header class="top">
+  <div class="eyebrow">DJI Osmo Pocket 3 — Complete Field Manual</div>
+  <h1>Osmo Pocket 3<br><em>完全マニュアル</em></h1>
+  <p class="lead">本体構造から撮影モード、画質設定、ジンバル操作、後処理ワークフロー、メンテナンスまでを網羅した超詳細リファレンスです。</p>
+</header>
+
+<!-- ===== TOC ===== -->
+<nav class="toc" aria-label="目次">
+  <div class="toc-inner">
+    <a href="#spec">スペック</a>
+    <a href="#parts">各部名称</a>
+    <a href="#buttons">ボタン操作</a>
+    <a href="#modes">撮影モード</a>
+    <a href="#resolution">解像度・fps</a>
+    <a href="#color">カラープロファイル</a>
+    <a href="#stabilization">手ブレ補正</a>
+    <a href="#exposure">露出設定</a>
+    <a href="#focus">フォーカス</a>
+    <a href="#audio">音声</a>
+    <a href="#accessories">アクセサリー</a>
+    <a href="#workflow">取り込み・編集</a>
+    <a href="#maintenance">メンテ</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
+
+<!-- ===== SPEC ===== -->
+<section id="spec">
+  <div class="sec-label">Section 01</div>
+  <h2>基本スペック <em>Specifications</em></h2>
+  <p class="sub">2023年10月発売。1/1.3型センサー搭載の3軸メカニカルジンバルカメラ。</p>
+
+  <div class="spec-grid">
+    <div class="spec-cell"><dt>センサー</dt><dd><strong>1/1.3型</strong>CMOS、9.4MP有効</dd></div>
+    <div class="spec-cell"><dt>レンズ焦点距離</dt><dd><strong>f=4.0 mm</strong>35mm換算 20mm相当</dd></div>
+    <div class="spec-cell"><dt>絞り</dt><dd><strong>f/2.0</strong>固定</dd></div>
+    <div class="spec-cell"><dt>最大動画解像度</dt><dd><strong>4K 120fps</strong>（H.265）</dd></div>
+    <div class="spec-cell"><dt>ジンバル軸</dt><dd><strong>3軸</strong>チルト±160° / パン±30° / ロール±45°</dd></div>
+    <div class="spec-cell"><dt>タッチスクリーン</dt><dd><strong>1.4型</strong>OLED、314ppi</dd></div>
+    <div class="spec-cell"><dt>バッテリー容量</dt><dd><strong>1300 mAh</strong>内蔵（非交換）</dd></div>
+    <div class="spec-cell"><dt>連続撮影時間</dt><dd><strong>116分</strong>（4K/30fps Normal）</dd></div>
+    <div class="spec-cell"><dt>充電端子</dt><dd><strong>USB-C</strong>（5V 2A / 9V 1.8A）</dd></div>
+    <div class="spec-cell"><dt>重量</dt><dd><strong>179 g</strong>（拡張ポート付き）</dd></div>
+    <div class="spec-cell"><dt>寸法</dt><dd><strong>146.8 × 45.8 × 35.0 mm</strong></dd></div>
+    <div class="spec-cell"><dt>防水・防塵</dt><dd>なし（IPX非対応）</dd></div>
+    <div class="spec-cell"><dt>対応SDカード</dt><dd>microSDXC / UHS-I / <strong>最大1TB</strong></dd></div>
+    <div class="spec-cell"><dt>マイク</dt><dd>3マイクアレイ / 8チャンネル</dd></div>
+    <div class="spec-cell"><dt>Bluetooth</dt><dd>BT 5.0（DJI Mic / RC連携）</dd></div>
+    <div class="spec-cell"><dt>Wi-Fi</dt><dd>2.4GHz / 5GHz（DJI Mimo転送用）</dd></div>
+  </div>
+
+  <div class="scroll mid" style="margin-top:16px">
+    <table>
+      <thead><tr><th>解像度</th><th>最大fps</th><th>ビットレート</th><th>コーデック</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td class="k">4K (3840×2160)</td><td class="n">120 fps</td><td class="n">130 Mbps</td><td>H.265</td><td><span class="badge green">推奨</span> 120fps はスロー専用</td></tr>
+        <tr><td class="k">4K (3840×2160)</td><td class="n">60 fps</td><td class="n">130 Mbps</td><td>H.265 / H.264</td><td>アクション・スポーツ向け</td></tr>
+        <tr><td class="k">4K (3840×2160)</td><td class="n">30 fps</td><td class="n">130 Mbps</td><td>H.265 / H.264</td><td>標準 Vlog 設定</td></tr>
+        <tr><td class="k">4K (3840×2160)</td><td class="n">24 fps</td><td class="n">130 Mbps</td><td>H.265 / H.264</td><td>映画的ルック</td></tr>
+        <tr><td class="k">1080p (1920×1080)</td><td class="n">240 fps</td><td class="n">60 Mbps</td><td>H.265</td><td>スロー最大。容量小</td></tr>
+        <tr><td class="k">1080p (1920×1080)</td><td class="n">60 fps</td><td class="n">60 Mbps</td><td>H.265 / H.264</td><td>軽量素材向け</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note tip" style="margin-top:12px">
+    <b>H.265 と H.264 どちらを選ぶ？</b><br>
+    H.265（HEVC）はファイルサイズが約30〜40%小さく画質も高い。Mac は Apple Silicon（M1以降）でハードウェア H.265 デコードに対応。古い Intel Mac では再生・編集が重いため H.264 が実用的。
+  </div>
+</section>
+
+<!-- ===== PARTS ===== -->
+<section id="parts">
+  <div class="sec-label">Section 02</div>
+  <h2>各部名称 <em>Parts &amp; Layout</em></h2>
+  <p class="sub">本体の各部位と役割の一覧です。</p>
+
+  <div class="diagram-wrap">
+    <!-- SVG diagram of Pocket 3 simplified -->
+    <svg viewBox="0 0 600 340" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Osmo Pocket 3 各部名称図">
+      <!-- Body -->
+      <rect x="220" y="60" width="160" height="260" rx="18" fill="var(--surface2)" stroke="var(--line)" stroke-width="2"/>
+      <!-- Screen -->
+      <rect x="234" y="74" width="80" height="72" rx="4" fill="var(--bg)" stroke="var(--pcb)" stroke-width="1.5"/>
+      <text x="274" y="114" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="var(--pcb)">1.4" OLED</text>
+      <!-- Camera module top -->
+      <rect x="236" y="160" width="44" height="44" rx="8" fill="var(--fg)" stroke="var(--line)" stroke-width="1.5"/>
+      <circle cx="258" cy="182" r="14" fill="#222" stroke="var(--pcb)" stroke-width="1.5"/>
+      <circle cx="258" cy="182" r="7" fill="#111"/>
+      <!-- Gimbal arm indicator -->
+      <line x1="280" y1="182" x2="310" y2="182" stroke="var(--pcb)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="314" y="186" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--fg)">ジンバルカメラ</text>
+      <!-- Power button -->
+      <rect x="316" y="130" width="14" height="28" rx="4" fill="var(--surface2)" stroke="var(--line)" stroke-width="1.5"/>
+      <line x1="330" y1="144" x2="380" y2="130" stroke="var(--faint)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="382" y="134" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--fg)">電源 / モードボタン</text>
+      <!-- Record button -->
+      <circle cx="380" cy="236" r="10" fill="var(--warn)" stroke="var(--line)" stroke-width="1.5"/>
+      <line x1="370" y1="236" x2="334" y2="236" stroke="var(--faint)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="390" y="240" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--fg)">録画ボタン</text>
+      <!-- USB-C bottom -->
+      <rect x="268" y="300" width="24" height="10" rx="3" fill="var(--sky)" stroke="var(--line)" stroke-width="1.5"/>
+      <line x1="268" y1="305" x2="220" y2="322" stroke="var(--faint)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="140" y="326" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--fg)">USB-C（充電/転送）</text>
+      <!-- microSD slot -->
+      <rect x="316" y="260" width="14" height="22" rx="2" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+      <line x1="330" y1="271" x2="380" y2="271" stroke="var(--faint)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="382" y="275" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--fg)">microSDスロット</text>
+      <!-- Screen label -->
+      <line x1="234" y1="110" x2="190" y2="95" stroke="var(--faint)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="110" y="99" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--fg)">タッチスクリーン</text>
+      <!-- Mic -->
+      <circle cx="300" cy="72" r="4" fill="var(--muted)" stroke="var(--line)" stroke-width="1"/>
+      <line x1="300" y1="68" x2="300" y2="40" stroke="var(--faint)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="270" y="34" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--fg)">上部マイク</text>
+    </svg>
+  </div>
+
+  <div class="scroll mid" style="margin-top:16px">
+    <table>
+      <thead><tr><th>部位</th><th>機能</th><th>操作・備考</th></tr></thead>
+      <tbody>
+        <tr><td class="k">電源ボタン</td><td>電源ON/OFF、モード切替</td><td>短押し: モード切替 / 長押し2秒: 電源</td></tr>
+        <tr><td class="k">録画ボタン</td><td>録画開始/停止、写真撮影</td><td>赤いボタン。撮影モードによって挙動が変わる</td></tr>
+        <tr><td class="k">タッチスクリーン</td><td>設定変更、フォーカス指定、プレビュー</td><td>上スワイプ: 設定メニュー / 下スワイプ: クイック設定</td></tr>
+        <tr><td class="k">ジンバルカメラ</td><td>3軸電動スタビライザー + カメラユニット</td><td>輸送時は保護カバーを装着。水濡れ厳禁</td></tr>
+        <tr><td class="k">USB-C ポート</td><td>充電、データ転送、外部マイク接続</td><td>スマートフォン直結にも対応（要アダプター）</td></tr>
+        <tr><td class="k">microSD スロット</td><td>外部ストレージ</td><td>本体右側面。カードは電源OFF後に抜き差し推奨</td></tr>
+        <tr><td class="k">マイク (×3)</td><td>3マイクアレイ収音</td><td>上面 + 側面に配置。指で塞がないよう注意</td></tr>
+        <tr><td class="k">拡張ポート</td><td>DJI アクセサリー接続</td><td>底面 USB-C ポート兼用。Grip &amp; Tripod Combo など</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== BUTTONS ===== -->
+<section id="buttons">
+  <div class="sec-label">Section 03</div>
+  <h2>ボタン操作リファレンス <em>Button Controls</em></h2>
+  <p class="sub">電源ボタンと録画ボタン、スクリーンスワイプの組み合わせで全操作が完結します。</p>
+
+  <div class="btn-grid">
+    <div class="btn-card">
+      <div class="btn-card-head">
+        <div class="btn-sym">⏻</div>
+        <div class="btn-name">電源ボタン</div>
+      </div>
+      <ul>
+        <li><b>長押し 2 秒</b> → 電源 ON / OFF</li>
+        <li><b>短押し 1 回</b> → 動画 ↔ 写真 ↔ パノラマ モード切替</li>
+        <li><b>撮影中に短押し</b> → ジンバル方向リセット（正面に戻す）</li>
+        <li><b>ダブルタップ</b> → 録画停止後に先頭フレームへジャンプ（プレビュー）</li>
+      </ul>
+    </div>
+    <div class="btn-card">
+      <div class="btn-card-head">
+        <div class="btn-sym" style="color:var(--warn)">⏺</div>
+        <div class="btn-name">録画ボタン</div>
+      </div>
+      <ul>
+        <li><b>短押し（動画モード）</b> → 録画開始 / 停止</li>
+        <li><b>短押し（写真モード）</b> → シャッター</li>
+        <li><b>長押し（動画中）</b> → スナップショット（動画継続しながら静止画保存）</li>
+        <li><b>タイムラプスモード中</b> → タイムラプス開始 / 停止</li>
+      </ul>
+    </div>
+    <div class="btn-card">
+      <div class="btn-card-head">
+        <div class="btn-sym" style="color:var(--sky)">↑</div>
+        <div class="btn-name">スクリーン — 上スワイプ</div>
+      </div>
+      <ul>
+        <li>設定メニュー（解像度・fps・カラー・ND 等）を表示</li>
+        <li>設定後は画面タップまたは下スワイプで戻る</li>
+      </ul>
+    </div>
+    <div class="btn-card">
+      <div class="btn-card-head">
+        <div class="btn-sym" style="color:var(--sky)">↓</div>
+        <div class="btn-name">スクリーン — 下スワイプ</div>
+      </div>
+      <ul>
+        <li>クイック設定（ND・WB・安定化モード）のショートカット</li>
+        <li>設定メニューを閉じる</li>
+      </ul>
+    </div>
+    <div class="btn-card">
+      <div class="btn-card-head">
+        <div class="btn-sym" style="color:var(--gold)">↔</div>
+        <div class="btn-name">スクリーン — 左右スワイプ</div>
+      </div>
+      <ul>
+        <li>撮影モードの切替（動画 → タイムラプス → スロー → パノラマ）</li>
+        <li>DJI Mimo アプリ接続時は追加モードも表示</li>
+      </ul>
+    </div>
+    <div class="btn-card">
+      <div class="btn-card-head">
+        <div class="btn-sym">👆</div>
+        <div class="btn-name">スクリーン — タップ</div>
+      </div>
+      <ul>
+        <li>フォーカスポイントの変更（タップした位置にピント）</li>
+        <li>顔検出 ON 中: タップした人物をロック</li>
+        <li>被写体追跡（ActiveTrack）の開始</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note" style="margin-top:4px">
+    <b>ジンバルのジョイスティック操作</b>（拡張グリップ装着時）：上下 = チルト / 左右 = パン。DJI Mimo アプリのジョイスティックUI でもリモート操作可能。
+  </div>
+</section>
+
+<!-- ===== MODES ===== -->
+<section id="modes">
+  <div class="sec-label">Section 04</div>
+  <h2>撮影モード一覧 <em>Shooting Modes</em></h2>
+  <p class="sub">スクリーンを左右スワイプしてモードを切り替えます。</p>
+
+  <div class="mode-list">
+    <div class="mode-card">
+      <div class="mode-head">
+        <div class="mode-icon">🎬</div>
+        <div><div class="mode-title">動画 Video</div><div class="mode-sub">VIDEO MODE</div></div>
+      </div>
+      <div class="mode-body">
+        <dl>
+          <dt>解像度</dt><dd><b>4K〜1080p</b></dd>
+          <dt>フレームレート</dt><dd><b>24 / 30 / 60 / 120 fps</b></dd>
+          <dt>カラー</dt><dd>Normal / D-Log M</dd>
+          <dt>特徴</dt><dd>メインの撮影モード。全設定が利用可能</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-head">
+        <div class="mode-icon">⏩</div>
+        <div><div class="mode-title">スローモーション</div><div class="mode-sub">SLOW MOTION</div></div>
+      </div>
+      <div class="mode-body">
+        <dl>
+          <dt>最大</dt><dd><b>4K 120fps / 1080p 240fps</b></dd>
+          <dt>再生倍率</dt><dd>4×（120fps → 30fps 出力）</dd>
+          <dt>注意</dt><dd>マイク録音なし（後でBGM追加推奨）</dd>
+          <dt>SDカード</dt><dd>V30 以上必須。発熱大</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-head">
+        <div class="mode-icon">⏱</div>
+        <div><div class="mode-title">タイムラプス</div><div class="mode-sub">TIMELAPSE</div></div>
+      </div>
+      <div class="mode-body">
+        <dl>
+          <dt>インターバル</dt><dd><b>2 s〜60 s</b> 選択可</dd>
+          <dt>出力</dt><dd>動画（MP4）で書き出し</dd>
+          <dt>露出</dt><dd>マニュアル推奨（Auto は禁止）</dd>
+          <dt>WB</dt><dd>マニュアル固定必須</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-head">
+        <div class="mode-icon">🌀</div>
+        <div><div class="mode-title">ハイパーラプス</div><div class="mode-sub">HYPERLAPSE</div></div>
+      </div>
+      <div class="mode-body">
+        <dl>
+          <dt>種類</dt><dd><b>フリー / サークル / 直線</b></dd>
+          <dt>特徴</dt><dd>ジンバルが滑らかに動きながらタイムラプス撮影</dd>
+          <dt>最適</dt><dd>歩き撮り、車窓、建物周回</dd>
+          <dt>注意</dt><dd>電池消費が特に大きい</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-head">
+        <div class="mode-icon">📷</div>
+        <div><div class="mode-title">写真 Photo</div><div class="mode-sub">PHOTO MODE</div></div>
+      </div>
+      <div class="mode-body">
+        <dl>
+          <dt>最大解像度</dt><dd><b>9.4 MP（4000×2250）</b></dd>
+          <dt>形式</dt><dd>JPEG / RAW（DNG）</dd>
+          <dt>モード</dt><dd>シングル / 連写 / 夜景 / スマートモード</dd>
+          <dt>RAW</dt><dd>DNG 形式。Lightroom / Capture One で現像</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-head">
+        <div class="mode-icon">🌐</div>
+        <div><div class="mode-title">パノラマ</div><div class="mode-sub">PANORAMA</div></div>
+      </div>
+      <div class="mode-body">
+        <dl>
+          <dt>種類</dt><dd><b>180° / 広角 / 球体 / Tiny Planet</b></dd>
+          <dt>処理</dt><dd>本体内合成（数秒で完成）</dd>
+          <dt>注意</dt><dd>動く被写体が映ると歪む。静止した景観に最適</dd>
+          <dt>出力</dt><dd>JPEG 単一ファイル</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-head">
+        <div class="mode-icon">📡</div>
+        <div><div class="mode-title">ライブストリーミング</div><div class="mode-sub">LIVE STREAM</div></div>
+      </div>
+      <div class="mode-body">
+        <dl>
+          <dt>要件</dt><dd>DJI Mimo アプリ + スマートフォン接続</dd>
+          <dt>解像度</dt><dd>最大 1080p 30fps（配信先依存）</dd>
+          <dt>配信先</dt><dd>YouTube / Facebook / カスタム RTMP</dd>
+          <dt>注意</dt><dd>スマホのデータ通信を使用</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-head">
+        <div class="mode-icon">🎯</div>
+        <div><div class="mode-title">ActiveTrack 3.0</div><div class="mode-sub">SUBJECT TRACKING</div></div>
+      </div>
+      <div class="mode-body">
+        <dl>
+          <dt>操作</dt><dd>スクリーンで被写体をタップ</dd>
+          <dt>追跡対象</dt><dd>人物・動物・乗り物など</dd>
+          <dt>ジンバル</dt><dd>被写体に自動追従（パン + チルト）</dd>
+          <dt>備考</dt><dd>DJI Mimo アプリから拡張設定可能</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESOLUTION ===== -->
+<section id="resolution">
+  <div class="sec-label">Section 05</div>
+  <h2>解像度・フレームレート選択 <em>Resolution &amp; Frame Rate</em></h2>
+  <p class="sub">目的に応じた解像度と fps の組み合わせガイドです。</p>
+
+  <div class="scroll wide">
+    <table>
+      <thead>
+        <tr><th>解像度</th><th>fps</th><th>ビットレート</th><th>用途</th><th>ファイルサイズ目安<br>（1分）</th><th>推奨度</th></tr>
+      </thead>
+      <tbody>
+        <tr class="hit"><td class="k">4K</td><td class="n">30</td><td class="n">130 Mbps</td><td>標準 Vlog・旅行・日常記録</td><td class="n">約 975 MB</td><td><span class="badge green">◎ 最推奨</span></td></tr>
+        <tr class="hit"><td class="k">4K</td><td class="n">60</td><td class="n">130 Mbps</td><td>スポーツ・アクション・スロー元素材</td><td class="n">約 975 MB</td><td><span class="badge green">◎</span></td></tr>
+        <tr><td class="k">4K</td><td class="n">24</td><td class="n">130 Mbps</td><td>映画的ルック・インタビュー</td><td class="n">約 975 MB</td><td><span class="badge sky">○</span></td></tr>
+        <tr><td class="k">4K</td><td class="n">120</td><td class="n">130 Mbps</td><td>4× スロー（30fps 出力時）</td><td class="n">約 975 MB</td><td><span class="badge sky">○ スロー用</span></td></tr>
+        <tr><td class="k">1080p</td><td class="n">60</td><td class="n">60 Mbps</td><td>軽量素材・SNS 向け縦動画</td><td class="n">約 450 MB</td><td><span class="badge line">△</span></td></tr>
+        <tr><td class="k">1080p</td><td class="n">120</td><td class="n">60 Mbps</td><td>4× スロー（30fps 出力）</td><td class="n">約 450 MB</td><td><span class="badge sky">○ スロー用</span></td></tr>
+        <tr><td class="k">1080p</td><td class="n">240</td><td class="n">60 Mbps</td><td>8× スロー（30fps 出力）</td><td class="n">約 450 MB</td><td><span class="badge gold">超スロー</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note" style="margin-top:14px">
+    <b>256 GB カード容量目安:</b> 4K/30fps (130 Mbps) で約 266 分（≈ 4.4 時間）。4K/120fps でも同じビットレートなので録画時間は同じ。ファイル数が増えるので整理しやすい名前付けを推奨。
+  </div>
+</section>
+
+<!-- ===== COLOR ===== -->
+<section id="color">
+  <div class="sec-label">Section 06</div>
+  <h2>カラープロファイル <em>Color Profile</em></h2>
+  <p class="sub">Normal と D-Log M の2択。使い分けが画質を大きく左右します。</p>
+
+  <div class="cmp-wrap" style="margin-bottom:20px">
+    <div class="cmp-card">
+      <div class="cmp-head normal">Normal</div>
+      <div class="cmp-body">
+        <ul>
+          <li>コントラスト・彩度が仕上がり済み</li>
+          <li>撮って出しで完成、後編集不要</li>
+          <li>SNS 直接アップに最適</li>
+          <li>ダイナミックレンジは狭め</li>
+          <li>空が白飛びしやすい</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cmp-card">
+      <div class="cmp-head dlog">D-Log M</div>
+      <div class="cmp-body">
+        <ul>
+          <li>フラットな発色で DR を最大化</li>
+          <li>後編集で色調整が大幅に効く</li>
+          <li>旅行・風景・シネマ向け</li>
+          <li>要: LUT または手動グレーディング</li>
+          <li>DJI 公式 LUT（Rec.709）を適用</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll mid">
+    <table>
+      <thead><tr><th>設定</th><th>推奨シーン</th><th>編集</th><th>LUT</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td class="k">D-Log M</td><td>旅行・風景・夜景・インタビュー</td><td>必須</td><td>DJI 公式「D-Log M to Rec.709」</td></tr>
+        <tr><td class="k">Normal</td><td>日常 Vlog・アクション・SNS 直投稿</td><td>不要</td><td>不要（LUT 適用不可）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note tip" style="margin-top:12px">
+    <b>DJI 公式 LUT の入手:</b> DJI 公式サイト → サポート → ダウンロード → 「D-Log M Color Transformation」をダウンロード。DaVinci Resolve では Color ページ → LUT → Open LUT Folder に配置。Final Cut Pro は Custom LUT エフェクトとして追加。
+  </div>
+</section>
+
+<!-- ===== STABILIZATION ===== -->
+<section id="stabilization">
+  <div class="sec-label">Section 07</div>
+  <h2>手ブレ補正モード <em>Stabilization</em></h2>
+  <p class="sub">物理3軸ジンバル＋電子補正の組み合わせ。シーンに合わせて選択します。</p>
+
+  <div class="stab-grid" style="margin-bottom:16px">
+    <div class="stab-cell">
+      <div class="stab-name">RockSteady</div>
+      <div class="stab-desc">電子手ブレ補正のみ。ジンバルの物理補正と併用で強力な安定化。歩き撮り・移動中に最適。クロップ量やや大。</div>
+    </div>
+    <div class="stab-cell">
+      <div class="stab-name">RockSteady MAX</div>
+      <div class="stab-desc">最大レベルの電子補正。アクション・激しい動きに対応。クロップ量が最も大きい。4K素材でも若干画角が狭くなる。</div>
+    </div>
+    <div class="stab-cell">
+      <div class="stab-name">HorizonSteady</div>
+      <div class="stab-desc">水平ライン維持を最優先。本体を傾けても画が水平を保つ。旅行・ドライブ・ウォーキングに効果的。</div>
+    </div>
+    <div class="stab-cell">
+      <div class="stab-name">HorizonBalancing</div>
+      <div class="stab-desc">水平保持しながら本体傾きに一部追従。自然な揺れを残しつつ水平崩れを防ぐ。FPV 的ルックに。</div>
+    </div>
+    <div class="stab-cell">
+      <div class="stab-name">FPV モード</div>
+      <div class="stab-desc">ジンバルをフリーに。本体の動きがそのまま映像に反映。ダイナミックな一人称視点映像向け。</div>
+    </div>
+    <div class="stab-cell">
+      <div class="stab-name">OFF（固定撮影）</div>
+      <div class="stab-desc">三脚使用時や、ジンバルアクションを使わない固定撮影時に。バッテリー消費を抑えられる。</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>選び方まとめ:</b> 歩き撮り → RockSteady ／ 走る・スポーツ → RockSteady MAX ／ 旅行・風景 → HorizonSteady ／ ダイナミック映像 → FPV ／ 三脚固定 → OFF
+  </div>
+</section>
+
+<!-- ===== EXPOSURE ===== -->
+<section id="exposure">
+  <div class="sec-label">Section 08</div>
+  <h2>露出設定詳細 <em>Exposure Settings</em></h2>
+  <p class="sub">絞りは f/2.0 固定のため、シャッタースピード・ISO・NDフィルターで露出をコントロールします。</p>
+
+  <h3>シャッタースピード</h3>
+  <div class="scroll mid">
+    <table>
+      <thead><tr><th>fps</th><th>180°則（推奨SS）</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td class="n">24</td><td class="n">1/48 s → <b>1/50 s</b></td><td>最も映画的なモーションブラー</td></tr>
+        <tr class="hit"><td class="n">30</td><td class="n"><b>1/60 s</b></td><td>標準 Vlog の黄金則</td></tr>
+        <tr><td class="n">60</td><td class="n"><b>1/120 s</b></td><td>スポーツ・アクション</td></tr>
+        <tr><td class="n">120</td><td class="n"><b>1/240 s</b></td><td>スローモーション素材</td></tr>
+        <tr><td class="n">240</td><td class="n"><b>1/480 s</b></td><td>超スロー。被写体ブレほぼなし</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>ISO と露出インデックス</h3>
+  <div class="scroll mid">
+    <table>
+      <thead><tr><th>ISO</th><th>ノイズレベル</th><th>推奨用途</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td class="n">100〜400</td><td>最小</td><td>屋外昼間・明るい室内。画質最優先</td></tr>
+        <tr><td class="n">400〜800</td><td>低〜中</td><td>薄曇り・夕方・軽い室内</td></tr>
+        <tr><td class="n">800〜1600</td><td>中</td><td>夜景・薄暗い室内。許容範囲内</td></tr>
+        <tr><td class="n">1600〜3200</td><td>高</td><td>暗所。Resolve でノイズ低減推奨</td></tr>
+        <tr><td class="n">3200〜6400</td><td>非常に高</td><td>緊急時のみ。実用品質の限界</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>ND フィルター選択表</h3>
+  <div class="scroll mid">
+    <table>
+      <thead><tr><th>天候 / 光量</th><th>30fps（SS 1/60）</th><th>60fps（SS 1/120）</th><th>120fps（SS 1/240）</th></tr></thead>
+      <tbody>
+        <tr><td>快晴（EV 15）</td><td class="n">ND64〜ND128</td><td class="n">ND32〜ND64</td><td class="n">ND16〜ND32</td></tr>
+        <tr class="hit"><td>晴れ（EV 14）</td><td class="n"><b>ND32〜ND64</b></td><td class="n">ND16〜ND32</td><td class="n">ND8〜ND16</td></tr>
+        <tr><td>薄曇り（EV 12）</td><td class="n">ND8〜ND16</td><td class="n">ND4〜ND8</td><td class="n">ND4</td></tr>
+        <tr><td>曇り（EV 10）</td><td class="n">ND4〜ND8</td><td class="n">ND4 or なし</td><td class="n">なし</td></tr>
+        <tr><td>屋内 / 夜間</td><td class="n">なし</td><td class="n">なし</td><td class="n">なし</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note" style="margin-top:12px">
+    <b>ND フィルターの種類:</b> 固定 ND（安価・扱いやすい）と可変 ND（1枚で幅広い光量に対応。ただし廉価品はX字ノイズが出やすい）があります。Pocket 3 専用マグネット着脱タイプが最も便利です。
+  </div>
+</section>
+
+<!-- ===== FOCUS ===== -->
+<section id="focus">
+  <div class="sec-label">Section 09</div>
+  <h2>フォーカス設定 <em>Focus</em></h2>
+  <p class="sub">AF（オートフォーカス）と MF（マニュアルフォーカス）を場面に応じて切り替えます。</p>
+
+  <div class="scroll mid">
+    <table>
+      <thead><tr><th>モード</th><th>操作</th><th>最適シーン</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td class="k">顔トラッキング AF</td><td>設定 → AF → 顔優先</td><td>Vlog・インタビュー・自撮り。人物が画面外に出ても再検出</td></tr>
+        <tr><td class="k">エリア AF</td><td>スクリーンをタップ</td><td>特定ポイントにピントを合わせたい時。タップしたポイントに固定</td></tr>
+        <tr><td class="k">スポーツ AF</td><td>設定 → AF → スポーツ</td><td>高速移動する被写体。予測 AF で追従精度アップ</td></tr>
+        <tr><td class="k">MF（手動）</td><td>設定 → MF → フォーカスリング</td><td>タイムラプス・固定景色・マクロ的な撮影。ピン固定が必要な場合</td></tr>
+        <tr><td class="k">被写体追跡（ActiveTrack）</td><td>スクリーンで被写体を長押し</td><td>動く人物・動物・乗り物をジンバルが自動追従</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note tip" style="margin-top:12px">
+    <b>MF の設定方法:</b> 上スワイプ → フォーカス → MF に切替 → スクリーンのフォーカスバーをドラッグで距離調整。ピーキング（輪郭強調表示）を ON にするとピント確認が容易。
+  </div>
+</section>
+
+<!-- ===== AUDIO ===== -->
+<section id="audio">
+  <div class="sec-label">Section 10</div>
+  <h2>音声設定 <em>Audio</em></h2>
+  <p class="sub">内蔵3マイクアレイと外部マイクの組み合わせで多様な収音に対応します。</p>
+
+  <div class="scroll mid">
+    <table>
+      <thead><tr><th>マイク設定</th><th>指向性</th><th>最適用途</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr><td class="k">全方向</td><td>無指向性</td><td>環境音・自然音・BGV収録</td><td>風音を拾いやすい</td></tr>
+        <tr class="hit"><td class="k">指向性（前方）</td><td>単一指向性</td><td>カメラ正面の被写体・インタビュー</td><td>背後のノイズを低減</td></tr>
+        <tr><td class="k">144° ワイド</td><td>広指向性</td><td>Vlog・景色・自撮り</td><td>バランスよく収音</td></tr>
+        <tr><td class="k">外部マイク（USB-C）</td><td>マイク依存</td><td>高品質インタビュー・ナレーション</td><td>DJI Mic 2 / ラベリアマイク等</td></tr>
+        <tr><td class="k">3.5mm（アダプター経由）</td><td>マイク依存</td><td>既存マイク資産の活用</td><td>USB-C → 3.5mm アダプター必要</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="scroll mid" style="margin-top:14px">
+    <table>
+      <thead><tr><th>音声パラメータ</th><th>設定値</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr><td class="k">サンプリングレート</td><td class="n">48 kHz</td><td>動画標準。YouTube・編集ソフト最適値</td></tr>
+        <tr><td class="k">ビット深度</td><td class="n">16 bit</td><td>標準品質。プロ用途なら外部レコーダーで 24 bit</td></tr>
+        <tr class="hit"><td class="k">音量レベル</td><td>設定から -6〜+6 dB 調整可</td><td>ピーク -6 dB 以下を目安に設定</td></tr>
+        <tr><td class="k">ウィンドカット</td><td>ON / OFF</td><td>屋外では ON。低域を削るため音楽収録は OFF</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn" style="margin-top:12px">
+    <b>外部マイク接続時の注意:</b> USB-C 接続中は充電できません。長時間撮影時はモバイルバッテリーを別ポートから給電するか、Grip &amp; Tripod Combo（別売）を使用して充電しながら録音できる構成を組んでください。
+  </div>
+</section>
+
+<!-- ===== ACCESSORIES ===== -->
+<section id="accessories">
+  <div class="sec-label">Section 11</div>
+  <h2>アクセサリー一覧 <em>Accessories</em></h2>
+  <p class="sub">DJI 純正品と汎用品の組み合わせで機能を拡張できます。</p>
+
+  <div class="scroll wide">
+    <table>
+      <thead><tr><th>アクセサリー</th><th>役割</th><th>必要度</th><th>価格帯</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td class="k">Grip &amp; Tripod Combo（純正）</td><td>グリップ延長 + 三脚 + 充電ポート + スピーカー</td><td><span class="badge green">必須級</span></td><td>¥6,000〜8,000</td></tr>
+        <tr class="hit"><td class="k">ND フィルターセット（専用マグネット式）</td><td>ND4 / 8 / 16 / 64 のセット</td><td><span class="badge green">強く推奨</span></td><td>¥5,000〜10,000</td></tr>
+        <tr><td class="k">DJI Mic 2（ワイヤレスマイク）</td><td>ラベリアマイクの無線伝送。受信機を USB-C に接続</td><td><span class="badge sky">高品質音声向け</span></td><td>¥30,000〜</td></tr>
+        <tr><td class="k">カバーアクセサリー（保護カバー）</td><td>ジンバルとレンズを輸送時に保護</td><td><span class="badge green">必須</span></td><td>付属品</td></tr>
+        <tr><td class="k">USB-C カードリーダー</td><td>MacBook へのデータ転送高速化</td><td><span class="badge sky">推奨</span></td><td>¥2,000〜5,000</td></tr>
+        <tr><td class="k">外付け SSD（USB-C NVMe）</td><td>動画素材の保管・編集ドライブ</td><td><span class="badge sky">推奨</span></td><td>¥10,000〜20,000</td></tr>
+        <tr><td class="k">三脚 / ミニ三脚</td><td>タイムラプス・固定撮影・インタビュー</td><td><span class="badge sky">用途次第</span></td><td>¥2,000〜</td></tr>
+        <tr><td class="k">ウィンドジャマー（フォーム素材）</td><td>屋外の風切り音軽減</td><td><span class="badge line">屋外多用者向け</span></td><td>¥500〜2,000</td></tr>
+        <tr><td class="k">モバイルバッテリー（20,000 mAh）</td><td>長時間撮影時の給電。USB-C PD 対応品</td><td><span class="badge line">長期撮影向け</span></td><td>¥3,000〜8,000</td></tr>
+        <tr><td class="k">清掃キット（ブロワー + クロス）</td><td>レンズ・センサー周りのホコリ除去</td><td><span class="badge green">必須</span></td><td>¥1,000〜</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== WORKFLOW ===== -->
+<section id="workflow">
+  <div class="sec-label">Section 12</div>
+  <h2>取り込み・編集ワークフロー <em>Import &amp; Edit</em></h2>
+  <p class="sub">Pocket 3 → MacBook Pro の最適フローです。</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-content">
+        <div class="step-title">SD カードを抜いてカードリーダーで接続</div>
+        <p class="step-body">電源 OFF 後に microSD を抜く。USB-C カードリーダー（Thunderbolt 対応品推奨）を MacBook に接続。実測 90〜100 MB/s でコピー可能。Wi-Fi 転送の 2〜3 倍速い。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <div class="step-title">外付け SSD へコピー（内蔵 SSD は温存）</div>
+        <p class="step-body">4K/30fps で 1 時間≒約 58 GB。内蔵 SSD を圧迫しないよう、Samsung T7 Shield や WD My Passport SSD 等の外付け SSD（500 GB〜1 TB）に保管。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <div class="step-title">フォルダ構成で整理</div>
+        <p class="step-body">例: <code>2025-10-01_Tokyo-Vlog / 2025-10-02_Nikko /</code> のように日付 + 場所名で管理。DJI が生成するファイル名（DJI_0001.MP4 等）はそのまま保持。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <div class="step-title">DaVinci Resolve でプロジェクト作成</div>
+        <p class="step-body">Project Settings → Master Settings → Timeline resolution を 4K (3840×2160) に。Frame rate を撮影 fps に合わせる。Color Science は DaVinci YRGB Color Managed 推奨。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <div class="step-title">D-Log M 素材に LUT を適用（D-Log M 使用時のみ）</div>
+        <p class="step-body">Color ページ → ノードの最後段に LUT ノードを追加 → 「D-Log M to Rec.709」LUT を適用。Log to Display になるため Output Color Space を Rec.709 に設定。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <div class="step-title">編集・カラーグレーディング</div>
+        <p class="step-body">Cut / Edit ページでカット編集 → Color ページで Lift / Gamma / Gain 調整、肌色微調整。Fairlight ページで音声正規化（ラウドネス -14 LUFS 目安 for YouTube）。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <div class="step-title">書き出し（Deliver ページ）</div>
+        <p class="step-body">YouTube 向け: H.264 4K 30fps、Restrict to 50 Mbps。Instagram 向け: H.264 1080p 30fps 縦アスペクト。アーカイブ用: Apple ProRes 422（ファイル大だが高品質）。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note tip" style="margin-top:16px">
+    <b>Final Cut Pro ユーザーへ:</b> D-Log M LUT は エフェクト → カスタム LUT として追加可能。Apple ProRes RAW には非対応（LUT はカメラ内グレーディング素材用）。
+  </div>
+</section>
+
+<!-- ===== MAINTENANCE ===== -->
+<section id="maintenance">
+  <div class="sec-label">Section 13</div>
+  <h2>メンテナンス <em>Maintenance</em></h2>
+  <p class="sub">ジンバルカメラは精密機器です。適切なケアで長く使えます。</p>
+
+  <div class="scroll mid">
+    <table>
+      <thead><tr><th>作業</th><th>頻度</th><th>方法・注意</th></tr></thead>
+      <tbody>
+        <tr class="hit"><td class="k">レンズ清掃</td><td>撮影前後</td><td>ブロワーでホコリを飛ばしてから、マイクロファイバークロスで円を描くように拭く。液体クリーナーは少量を布に付けてから</td></tr>
+        <tr><td class="k">ジンバルキャリブレーション</td><td>月 1 回 or 異常時</td><td>設定 → ジンバル → キャリブレーション → 平らな場所に置いて実行</td></tr>
+        <tr><td class="k">ファームウェア更新</td><td>月 1〜2 回確認</td><td>DJI Mimo アプリ起動 → Pocket 3 接続 → アップデート通知を確認</td></tr>
+        <tr><td class="k">SDカード フォーマット</td><td>50〜100 時間使用毎</td><td>本体内フォーマット（設定 → ストレージ → フォーマット）を推奨。PC フォーマットより安定</td></tr>
+        <tr><td class="k">保管時の保護カバー</td><td>毎回</td><td>専用保護カバーを必ず装着。ジンバルアームへの衝撃を防止</td></tr>
+        <tr><td class="k">バッテリー管理</td><td>長期保管時</td><td>30〜60% で保管。フル充電・完全放電での長期保管は劣化の原因</td></tr>
+        <tr><td class="k">ジンバルモーター部の清掃</td><td>砂埃・塩害後</td><td>エアダスターで優しく吹く。水洗い厳禁（防水非対応）</td></tr>
+        <tr><td class="k">USB-C ポートの清掃</td><td>3〜6 ヶ月毎</td><td>爪楊枝 + 乾いた布でゴミを取り除く。金属片は使わない</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn" style="margin-top:12px">
+    <b>水濡れに注意:</b> Pocket 3 は防水・防塵非対応（IPX なし）です。雨天・海辺・プールサイドでは防水ケースまたは防水ハウジングの使用を強く推奨します。万一水に濡れた場合は即電源 OFF にし、乾燥剤（シリカゲル）とともに袋に入れて 24〜48 時間乾燥させてください。
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section id="faq">
+  <div class="sec-label">Section 14</div>
+  <h2>よくある質問 <em>FAQ</em></h2>
+  <p class="sub">トラブルシューティングと疑問の解決集。</p>
+
+  <details>
+    <summary>録画中に突然停止する・エラーが出る</summary>
+    <div class="details-body">
+      <p><b>原因の多くは SDカードの書込速度不足です。</b></p>
+      <ul>
+        <li>V30（30 MB/s）以上の規格カードを使用しているか確認</li>
+        <li>カードを本体内でフォーマットし直す（設定 → ストレージ → フォーマット）</li>
+        <li>長時間使用で本体が過熱すると自動停止する場合がある → 風通しのよい場所で冷却</li>
+        <li>カードが古い・傷んでいる場合は新品に交換</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>映像がジャダー（カクつき）する</summary>
+    <div class="details-body">
+      <ul>
+        <li>シャッタースピードが fps の 2 倍になっているか確認（180° 則）</li>
+        <li>電子手ブレ補正をオフにして確認 → ジンバルの物理的な問題かを切り分け</li>
+        <li>編集ソフトでの再生ジャダーは PC スペック不足の可能性 → プロキシ編集を試す</li>
+        <li>ファームウェアを最新版に更新する</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>D-Log M の映像が白っぽく見える（編集前）</summary>
+    <div class="details-body">
+      <p>D-Log M はフラットなガンマカーブで記録されているため、LUT 適用前は白っぽく眠い発色に見えます。これは正常です。</p>
+      <ul>
+        <li>DaVinci Resolve / Final Cut Pro で「D-Log M to Rec.709」LUT を適用する</li>
+        <li>LUT は DJI 公式サイトからダウンロード（無料）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>ジンバルが水平にならない・傾いて見える</summary>
+    <div class="details-body">
+      <ul>
+        <li>設定 → ジンバル → キャリブレーション を実行（平らな場所で）</li>
+        <li>保護カバーが付いたままだとキャリブレーション不可。外して実行</li>
+        <li>強い磁場（スピーカー・モーター付近）を避ける</li>
+        <li>解決しない場合は DJI サポートに問い合わせ</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>DJI Mimo アプリと接続できない</summary>
+    <div class="details-body">
+      <ul>
+        <li>Pocket 3 と Mimo アプリを最新バージョンに更新する</li>
+        <li>Bluetooth と Wi-Fi の両方を ON にした状態で接続を試みる</li>
+        <li>スマートフォンの Bluetooth をオフ → オンで再起動してペアリングをリセット</li>
+        <li>それでも繋がらない場合: Pocket 3 を長押し 8 秒で工場出荷設定にリセット後、再ペアリング</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>夜間撮影でノイズが多い</summary>
+    <div class="details-body">
+      <ul>
+        <li>ISO を下げる（ISO 800 以下を目標に、シャッタースピードと ND を調整）</li>
+        <li>フレームレートを 24fps に下げて露光時間を稼ぐ（1/50 s → より多くの光を取り込む）</li>
+        <li>D-Log M で撮影し Resolve の Noise Reduction（Ultra NR）を適用</li>
+        <li>補助光（LED ライト）の使用</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>バッテリーの持ちが短い</summary>
+    <div class="details-body">
+      <ul>
+        <li>4K/60fps・スローモーションは消費が大きい。用途に合わせて 4K/30fps に落とす</li>
+        <li>タイムラプスは特に消費が大きい → USB-C からの給電（モバイルバッテリー）を併用</li>
+        <li>冬場は寒さでバッテリー性能が低下（気温 0°C で通常比 50〜60% 程度になる場合も）</li>
+        <li>Grip &amp; Tripod Combo 経由でモバイルバッテリーを接続すると充電しながら撮影可能</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>MacBook で H.265 動画の編集が重い・コマ落ちする</summary>
+    <div class="details-body">
+      <ul>
+        <li>M1 以降の Apple Silicon Mac は H.265 をハードウェアデコード。基本的に問題ない</li>
+        <li>Intel Mac の場合: DaVinci Resolve でプロキシ生成（Optimized Media / Proxy）を使用</li>
+        <li>H.264 で再撮影するか、ffmpeg で H.264 にバッチ変換してから編集</li>
+        <li>編集ドライブが HDD の場合は SSD に変更するだけでも大幅改善</li>
+      </ul>
+    </div>
+  </details>
+
+</section>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="wrap">
+    DJI Osmo Pocket 3 完全マニュアル — 2025 年 10 月版。仕様はファームウェアアップデートにより変更されることがあります。<br>
+    最新情報は <a href="https://www.dji.com/osmo-pocket-3" target="_blank" rel="noopener">DJI 公式サイト</a> でご確認ください。
+  </div>
+</footer>
+</body>
+</html>
