@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>microSD 規格大全</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#edf1ef;--surface:#f8faf9;--fg:#13201b;--muted:#52625b;--line:#c9d3ce;
+  --pcb:#0d6b4d;--gold:#9a6f0c;--gold-soft:#f1e3b8;--hit:#dff0e8;--warn:#8a2a1c;
+  --font-display:"Barlow Condensed","Noto Sans JP",sans-serif;
+  --font-body:"Noto Sans JP",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1613;--surface:#16211c;--fg:#e4ede8;--muted:#9bada5;--line:#2b3a33;
+  --pcb:#4fc79a;--gold:#e0b64a;--gold-soft:#3a2f10;--hit:#173629;--warn:#ff9d8a;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e1613;--surface:#16211c;--fg:#e4ede8;--muted:#9bada5;--line:#2b3a33;
+  --pcb:#4fc79a;--gold:#e0b64a;--gold-soft:#3a2f10;--hit:#173629;--warn:#ff9d8a;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.75;padding-inline:16px;padding-block:0 64px;margin:0}
+.wrap{max-width:1000px;margin-inline:auto}
+header.top{padding-block:40px 24px;border-bottom:2px solid var(--fg)}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;color:var(--pcb);text-transform:uppercase}
+h1{font-family:var(--font-display);font-weight:700;font-size:clamp(40px,9vw,76px);line-height:1;margin:8px 0 12px;letter-spacing:.01em}
+.lead{max-width:62ch;color:var(--muted);margin:0}
+nav.idx{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding-block:10px;margin-inline:-16px;padding-inline:16px}
+nav.idx a{flex:none;font-family:var(--font-mono);font-size:12px;color:var(--fg);text-decoration:none;border:1px solid var(--line);padding:4px 10px;border-radius:3px;background:var(--surface)}
+nav.idx a:hover{border-color:var(--pcb);color:var(--pcb)}
+section{padding-block:40px 8px}
+h2{font-family:var(--font-display);font-weight:700;font-size:32px;line-height:1.1;margin:0 0 6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 small{font-family:var(--font-mono);font-weight:400;font-size:12px;color:var(--gold);letter-spacing:.08em}
+p.sub{color:var(--muted);margin:0 0 16px;max-width:68ch}
+.scroll{overflow-x:auto;border:1px solid var(--line);background:var(--surface);border-radius:4px}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.k{font-family:var(--font-mono);font-weight:600;white-space:nowrap}
+td.n{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.hit td{background:var(--hit)}
+.tag{font-family:var(--font-mono);font-size:11px;background:var(--pcb);color:var(--bg);padding:1px 6px;border-radius:2px;margin-left:6px;white-space:nowrap}
+.note{border-left:3px solid var(--gold);background:var(--gold-soft);padding:10px 14px;margin-top:14px;font-size:14px;max-width:72ch}
+.note.warn{border-color:var(--warn)}
+.note b{font-weight:700}
+.label{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px;display:grid;gap:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--fg);border-radius:4px;padding:6px 12px;font-family:var(--font-display);font-weight:700;font-size:26px;line-height:1.1;background:var(--bg)}
+.chip.sel{border-color:var(--pcb);color:var(--pcb)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.legend div{min-width:0;font-size:13.5px}
+.legend b{display:block;font-family:var(--font-mono);font-size:12px;color:var(--gold);letter-spacing:.06em;margin-bottom:2px}
+.sizes{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-end;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px}
+.sz{display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:0}
+.sz .box{border:2px solid var(--fg);background:var(--bg);position:relative;border-radius:3px}
+.sz .box::after{content:"";position:absolute;left:8%;right:8%;bottom:0;height:12%;background:var(--gold);opacity:.8}
+.sz span{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.sz strong{font-family:var(--font-display);font-size:20px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.box2{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:16px;min-width:0}
+.box2 h3{font-family:var(--font-display);font-size:20px;margin:0 0 4px}
+.box2 ul{margin:6px 0 0;padding-left:1.2em}
+.box2 li{margin-bottom:4px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;max-width:72ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">microSD / SD Memory Card Reference</div>
+  <h1>microSD 規格大全</h1>
+  <p class="lead">容量クラス、バス速度、スピードクラス、ファイルシステム、物理サイズ、世代と互換性を1ページにまとめました。緑の行は DJI Osmo Pocket 3 での撮影に向く条件です。</p>
+</header>
+
+<nav class="idx" aria-label="目次">
+  <a href="#label">ラベルの読み方</a>
+  <a href="#capacity">容量規格</a>
+  <a href="#bus">バス速度</a>
+  <a href="#class">スピードクラス</a>
+  <a href="#fs">ファイルシステム</a>
+  <a href="#size">サイズ</a>
+  <a href="#ver">世代</a>
+  <a href="#compat">互換性</a>
+  <a href="#pocket3">Pocket 3</a>
+</nav>
+
+<section id="label">
+  <h2>カード表面の読み方 <small>LABEL</small></h2>
+  <p class="sub">表面の記号は、容量クラス、バス、速度クラスの順に並びます。下は Pocket 3 向けに選ぶ典型的な表記です。</p>
+  <div class="label">
+    <div class="chips">
+      <span class="chip">microSDXC</span><span class="chip">I</span><span class="chip sel">U3</span><span class="chip sel">V30</span><span class="chip sel">A2</span><span class="chip">256GB</span>
+    </div>
+    <div class="legend">
+      <div><b>microSDXC</b>容量クラス。64GB〜2TB。</div>
+      <div><b>I（UHS-I）</b>バス規格。ローマ数字の I / II / III で表します。</div>
+      <div><b>U3</b>UHS スピードクラス。最低保証書込 30MB/s。</div>
+      <div><b>V30</b>ビデオスピードクラス。最低保証書込 30MB/s。動画向け。</div>
+      <div><b>A2</b>アプリ性能クラス。ランダムアクセス性能の保証。</div>
+      <div><b>256GB</b>容量。偽容量品はここを偽ります。</div>
+    </div>
+  </div>
+</section>
+
+<section id="capacity">
+  <h2>容量規格 <small>CAPACITY CLASS</small></h2>
+  <p class="sub">容量で規格名が決まります。上位規格は下位規格のホストでは読めないことがあります。</p>
+  <div class="scroll"><table>
+    <thead><tr><th>規格</th><th>容量</th><th>ファイルシステム</th><th>導入仕様</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td class="k">microSD</td><td class="n">〜2GB</td><td>FAT12 / FAT16</td><td class="n">SD 1.x</td><td>初期規格。現在はほぼ流通しません。</td></tr>
+      <tr><td class="k">microSDHC</td><td class="n">4GB〜32GB</td><td>FAT32</td><td class="n">SD 2.0</td><td>High Capacity。単一ファイルは4GB上限。</td></tr>
+      <tr class="hit"><td class="k">microSDXC<span class="tag">Pocket 3</span></td><td class="n">64GB〜2TB</td><td>exFAT</td><td class="n">SD 3.0</td><td>現在の主流。128GB / 256GB / 512GB / 1TB が該当します。</td></tr>
+      <tr><td class="k">microSDUC</td><td class="n">2TB超〜128TB</td><td>exFAT</td><td class="n">SD 7.0</td><td>仕様上の上限です。市販品は限られます。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>一つ上の規格のカードは古い機器で使えません。</b> 古いカードリーダーが SDHC までの場合、256GB の SDXC は認識されないか、フォーマットを促されます。</div>
+</section>
+
+<section id="bus">
+  <h2>バス速度規格 <small>BUS INTERFACE</small></h2>
+  <p class="sub">カードとホストの間の通信規格です。表の数値は理論上の上限で、実際の速度はカードの中身で決まります。</p>
+  <div class="scroll"><table>
+    <thead><tr><th>名称</th><th>最大転送速度</th><th>電圧 / 方式</th><th>表記</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Default Speed</td><td class="n">12.5 MB/s</td><td>3.3V / 4bit</td><td>なし</td><td>最初期の速度モード。</td></tr>
+      <tr><td class="k">High Speed</td><td class="n">25 MB/s</td><td>3.3V / 4bit</td><td>なし</td><td>SD 1.1 以降。</td></tr>
+      <tr><td class="k">UHS-I SDR12</td><td class="n">12.5 MB/s</td><td>1.8V</td><td>I</td><td></td></tr>
+      <tr><td class="k">UHS-I SDR25</td><td class="n">25 MB/s</td><td>1.8V</td><td>I</td><td></td></tr>
+      <tr><td class="k">UHS-I SDR50 / DDR50</td><td class="n">50 MB/s</td><td>1.8V</td><td>I</td><td></td></tr>
+      <tr class="hit"><td class="k">UHS-I SDR104<span class="tag">Pocket 3</span></td><td class="n">104 MB/s</td><td>1.8V</td><td>I</td><td>市販の microSD の大半はここです。Pocket 3 の動作もこのバスです。</td></tr>
+      <tr><td class="k">UHS-II</td><td class="n">156 / 312 MB/s</td><td>LVDS / 2列ピン</td><td>II</td><td>SD サイズでは普及。microSD ではほとんど流通しません。</td></tr>
+      <tr><td class="k">UHS-III</td><td class="n">312 / 624 MB/s</td><td>LVDS / 2列ピン</td><td>III</td><td>対応製品はごく少数です。</td></tr>
+      <tr><td class="k">SD Express 7.0</td><td class="n">約 985 MB/s</td><td>PCIe 3.0 ×1 / NVMe</td><td>EXPRESS</td><td>microSD Express は SD 7.1 で追加。</td></tr>
+      <tr><td class="k">SD Express 8.0</td><td class="n">約 3,940 MB/s</td><td>PCIe 4.0 ×2 / NVMe</td><td>EXPRESS</td><td>SD サイズが中心。microSD での製品化は限定的です。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>下位互換があります。</b> UHS-II や SD Express のカードは、UHS-I のホストでは UHS-I の速度に落ちて動きます。Pocket 3 には UHS-I カードで十分です。</div>
+</section>
+
+<section id="class">
+  <h2>スピードクラス <small>SPEED CLASS</small></h2>
+  <p class="sub">「最低保証の連続書込速度」の等級です。最大速度の表記ではなく、録画が途切れないかの目安になります。</p>
+  <div class="scroll"><table>
+    <thead><tr><th>系統</th><th>表記</th><th>最低書込</th><th>主な用途</th></tr></thead>
+    <tbody>
+      <tr><td class="k" rowspan="4">Speed Class</td><td class="k">C2</td><td class="n">2 MB/s</td><td>SD 画質の動画</td></tr>
+      <tr><td class="k">C4</td><td class="n">4 MB/s</td><td>HD 動画（低ビットレート）</td></tr>
+      <tr><td class="k">C6</td><td class="n">6 MB/s</td><td>HD 動画</td></tr>
+      <tr><td class="k">C10</td><td class="n">10 MB/s</td><td>フル HD 動画</td></tr>
+      <tr><td class="k" rowspan="2">UHS Speed Class</td><td class="k">U1</td><td class="n">10 MB/s</td><td>フル HD 動画</td></tr>
+      <tr class="hit"><td class="k">U3<span class="tag">Pocket 3</span></td><td class="n">30 MB/s</td><td>4K 動画</td></tr>
+      <tr><td class="k" rowspan="5">Video Speed Class</td><td class="k">V6</td><td class="n">6 MB/s</td><td>HD 動画</td></tr>
+      <tr><td class="k">V10</td><td class="n">10 MB/s</td><td>フル HD 動画</td></tr>
+      <tr class="hit"><td class="k">V30<span class="tag">Pocket 3</span></td><td class="n">30 MB/s</td><td>4K 動画。4K/60fps 以下なら基本ここです。</td></tr>
+      <tr><td class="k">V60</td><td class="n">60 MB/s</td><td>高ビットレート 4K、8K 手前</td></tr>
+      <tr><td class="k">V90</td><td class="n">90 MB/s</td><td>8K、シネマ用途</td></tr>
+      <tr><td class="k" rowspan="2">App Performance</td><td class="k">A1</td><td class="n">読 1,500 / 書 500 IOPS</td><td>アプリ実行用。連続書込は 10MB/s 以上。</td></tr>
+      <tr class="hit"><td class="k">A2<span class="tag">Pocket 3</span></td><td class="n">読 4,000 / 書 2,000 IOPS</td><td>アプリ実行用。細かい読み書きが速いです。</td></tr>
+      <tr><td class="k" rowspan="4">SD Express Class</td><td class="k">E150</td><td class="n">150 MB/s</td><td>SD Express カード用</td></tr>
+      <tr><td class="k">E300</td><td class="n">300 MB/s</td><td>同上</td></tr>
+      <tr><td class="k">E450</td><td class="n">450 MB/s</td><td>同上</td></tr>
+      <tr><td class="k">E600</td><td class="n">600 MB/s</td><td>同上</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>最大読込速度の数字だけで選ばないでください。</b> 録画で効くのは「書込」の最低保証です。パッケージの「最大 190MB/s」は読込の最大値であることが多いです。</div>
+</section>
+
+<section id="fs">
+  <h2>ファイルシステム <small>FILE SYSTEM</small></h2>
+  <p class="sub">規格上の標準形式です。Pocket 3 で初期化すると exFAT になります。</p>
+  <div class="scroll"><table>
+    <thead><tr><th>形式</th><th>標準の対象</th><th>ファイル上限</th><th>macOS</th><th>Windows</th></tr></thead>
+    <tbody>
+      <tr><td class="k">FAT12 / FAT16</td><td>〜2GB</td><td class="n">約 2〜4GB</td><td>読み書き可</td><td>読み書き可</td></tr>
+      <tr><td class="k">FAT32</td><td>SDHC（4〜32GB）</td><td class="n">4GB 未満</td><td>読み書き可</td><td>読み書き可</td></tr>
+      <tr class="hit"><td class="k">exFAT<span class="tag">Pocket 3</span></td><td>SDXC / SDUC</td><td class="n">事実上無制限</td><td>読み書き可</td><td>読み書き可</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note warn"><b>FAT32 でフォーマットした大容量カードは避けてください。</b> 4K 動画は 1 ファイルが 4GB を超えるため、自動分割や録画停止の原因になります。</div>
+</section>
+
+<section id="size">
+  <h2>物理サイズ <small>FORM FACTOR（実寸比）</small></h2>
+  <p class="sub">下の図は 3 つのサイズを同じ縮尺で並べています。microSD は SD の約 4 分の 1 の面積です。</p>
+  <div class="sizes">
+    <div class="sz"><div class="box" style="width:128px;height:96px"></div><strong>SD</strong><span>32 × 24 × 2.1 mm</span></div>
+    <div class="sz"><div class="box" style="width:86px;height:80px"></div><strong>miniSD</strong><span>21.5 × 20 × 1.4 mm</span></div>
+    <div class="sz"><div class="box" style="width:60px;height:44px"></div><strong>microSD</strong><span>15 × 11 × 1.0 mm</span></div>
+  </div>
+  <div class="note">microSD → SD の変換アダプタを使えば、Mac の SD スロットにも挿せます。ただしアダプタの品質が速度に影響することがあります。miniSD は現在ほとんど使われていません。</div>
+</section>
+
+<section id="ver">
+  <h2>仕様バージョンの流れ <small>SD SPECIFICATION</small></h2>
+  <p class="sub">SD Association の仕様番号ごとに追加された主な機能です。年は仕様公開時期の目安です。</p>
+  <div class="scroll"><table>
+    <thead><tr><th>仕様</th><th>年（目安）</th><th>追加された主な内容</th></tr></thead>
+    <tbody>
+      <tr><td class="k">SD 1.0 / 1.1</td><td class="n">2001〜2003</td><td>最大 2GB。High Speed モード（25MB/s）。</td></tr>
+      <tr><td class="k">SD 2.0</td><td class="n">2006</td><td>SDHC（〜32GB）、FAT32、Speed Class。</td></tr>
+      <tr><td class="k">SD 3.0</td><td class="n">2009</td><td>SDXC（〜2TB）、exFAT、UHS-I。</td></tr>
+      <tr><td class="k">SD 4.0</td><td class="n">2011</td><td>UHS-II、UHS Speed Class（U1 / U3）。</td></tr>
+      <tr><td class="k">SD 5.0</td><td class="n">2016</td><td>Video Speed Class（V6〜V90）。</td></tr>
+      <tr><td class="k">SD 5.1</td><td class="n">2016</td><td>App Performance Class（A1 / A2）。</td></tr>
+      <tr><td class="k">SD 6.0</td><td class="n">2017</td><td>UHS-III（最大 624MB/s）。</td></tr>
+      <tr><td class="k">SD 7.0</td><td class="n">2018</td><td>SD Express（PCIe / NVMe）、SDUC（〜128TB）。</td></tr>
+      <tr><td class="k">SD 7.1</td><td class="n">2019</td><td>microSD Express。</td></tr>
+      <tr><td class="k">SD 8.0</td><td class="n">2020</td><td>PCIe 4.0 対応の SD Express、Express Class（E150〜E600）。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">この表は主要な規格をまとめたものです。メーカー独自の拡張や規格外の仕様もあります。最新の仕様は SD Association の公式情報で確認してください。</div>
+</section>
+
+<section id="compat">
+  <h2>互換性の考え方 <small>COMPATIBILITY</small></h2>
+  <div class="grid2">
+    <div class="box2"><h3>上位カード → 下位ホスト</h3>
+      <ul>
+        <li>UHS-II / SD Express カードは、UHS-I ホストで UHS-I 速度に落ちて動作します。</li>
+        <li>SDXC カードは、SDHC 専用のホストでは認識されません。</li>
+        <li>SDUC カードは、SDUC 対応のホストが必要です。</li>
+      </ul></div>
+    <div class="box2"><h3>下位カード → 上位ホスト</h3>
+      <ul>
+        <li>SDHC や SDXC のホストは、古い SD カードも読めます。</li>
+        <li>速度は、カードとホストの低い方で決まります。</li>
+      </ul></div>
+    <div class="box2"><h3>速度が出ない主な原因</h3>
+      <ul>
+        <li>カードリーダーが USB 2.0 までしか対応していない。</li>
+        <li>変換アダプタや USB ハブの品質が低い。</li>
+        <li>カードが UHS-I 以前の古い世代である。</li>
+      </ul></div>
+    <div class="box2"><h3>偽容量品の見分け方</h3>
+      <ul>
+        <li>無名ブランドの 1TB は疑ってください。</li>
+        <li>購入後は F3（Mac / Linux）か H2testw（Windows）で全容量を検査します。</li>
+        <li>正規メーカーの公式ストアか、Amazon.co.jp 販売・発送を選びます。</li>
+      </ul></div>
+  </div>
+</section>
+
+<section id="pocket3">
+  <h2>Osmo Pocket 3 での選び方 <small>RECOMMENDED</small></h2>
+  <p class="sub">ここまでの規格を、Pocket 3 での撮影用に絞り込むと次の条件になります。</p>
+  <div class="scroll"><table>
+    <thead><tr><th>項目</th><th>推奨</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr class="hit"><td class="k">容量クラス</td><td>microSDXC</td><td>64GB 以上は SDXC です。</td></tr>
+      <tr class="hit"><td class="k">バス</td><td>UHS-I</td><td>Pocket 3 は UHS-I で動作します。UHS-II を買っても速度は活きません。</td></tr>
+      <tr class="hit"><td class="k">速度クラス</td><td>U3 / V30 以上</td><td>4K 録画の書込を安定させます。4K/120fps や高ビットレートでは V60 を検討します。</td></tr>
+      <tr class="hit"><td class="k">アプリ性能</td><td>A2</td><td>細かい書込が速く、ファイル管理が安定します。</td></tr>
+      <tr class="hit"><td class="k">形式</td><td>exFAT</td><td>本体でフォーマットすれば自動で選ばれます。</td></tr>
+      <tr><td class="k">容量の目安</td><td>128〜256GB</td><td>撮り溜めしない運用なら十分です。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note">対応する最大容量や推奨条件は、機種のファームウェアで変わることがあります。購入前に DJI 公式の仕様で最新の情報を確認してください。</div>
+</section>
+
+<footer>この表は一般に公開されている SD 規格の情報をもとにまとめています。数値は規格上の値で、実際の製品性能とは異なる場合があります。</footer>
+</div>
+</body>
+</html>
